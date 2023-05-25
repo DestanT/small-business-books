@@ -78,7 +78,7 @@ def validate_data(data, headings):
     return True
 
 
-def update_worksheet(data, worksheet):
+def update_worksheet(worksheet, data):
     """
     Receives a data list, finds the date associated with data,
     and updates specified worksheet.
@@ -98,7 +98,7 @@ def update_worksheet(data, worksheet):
     print(f'"{worksheet}_{year}" worksheet updated successfully.\n')
 
 
-def calculate_totals(data, worksheet):
+def calculate_totals(worksheet, data):
     """
     Calculates total sums and updates specified worksheet.
     If worksheet == 'income'; calculates cash value for the day.
@@ -133,12 +133,12 @@ def calculate_totals(data, worksheet):
 
 def main():
     income_data = record_data('income', 2023)
-    update_worksheet(income_data, 'income')
-    calculate_totals(income_data, 'income')
+    update_worksheet('income', income_data)
+    calculate_totals('income', income_data)
 
     expense_data = record_data('expense', 2023)
-    update_worksheet(expense_data, 'expense')
-    calculate_totals(expense_data, 'expense')
+    update_worksheet('expense', expense_data)
+    calculate_totals('expense', expense_data)
 
 
 main()
