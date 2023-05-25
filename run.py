@@ -129,16 +129,55 @@ def calculate_totals(worksheet, data):
         print('Cash and')
 
     print('Total sum calculated.\n')
+
+
+def input_time_period():
+    """
+    Get start and end dates from the user.
+    Validates each input for correct format,
+    and checks if end date is later than start date.
+    Returns [start_date, end_date] list.
+    """
+    while True:
+        print('Input the desired START date (DD/MM/YYYY):\n')
+        start_date = input()
+
+        if validate_data([start_date], [1]):
+            break
+        else:
+            continue
+
+    while True:
+        print(f'Input the desired END date (Later than {start_date}):\n')
+        end_date = input()
+
+        try:
+            first_date = datetime.strptime(start_date, '%d/%m/%Y')
+            second_date = datetime.strptime(end_date, '%d/%m/%Y')
+
+            if second_date < first_date or second_date == first_date:
+                print('Please try again...')
+                continue
+        except:
+            pass
+
+        if validate_data([end_date], [1]):
+            return [start_date, end_date]
+        else:
+            continue
+
     
-
 def main():
-    income_data = record_data('income', 2023)
-    update_worksheet('income', income_data)
-    calculate_totals('income', income_data)
+    # income_data = record_data('income', 2023)
+    # update_worksheet('income', income_data)
+    # calculate_totals('income', income_data)
 
-    expense_data = record_data('expense', 2023)
-    update_worksheet('expense', expense_data)
-    calculate_totals('expense', expense_data)
+    # expense_data = record_data('expense', 2023)
+    # update_worksheet('expense', expense_data)
+    # calculate_totals('expense', expense_data)
+
+    dates = input_time_period()
+    print(dates)
 
 
 main()
