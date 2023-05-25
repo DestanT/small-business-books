@@ -81,7 +81,6 @@ def update_worksheet(data, worksheet):
     year = date_list[2]
     
     print(f'Updating "{worksheet}_{year}" worksheet...\n')
-
     worksheet_to_update = SHEET.worksheet(f'{worksheet}_{year}')
     row_to_update = worksheet_to_update.find(date).row
          
@@ -92,8 +91,42 @@ def update_worksheet(data, worksheet):
     print(f'"{worksheet}_{year}" worksheet updated successfully.\n')
 
 
+def calculate_totals(data, worksheet):
+    """
+    Calculates total sums and updates specified worksheet.
+    If worksheet == 'income'; calculates cash value for the day.
+    """
+    date = data[0]
+    date_list = date.split('/')
+    year = date_list[2]
+
+    worksheet_to_update = SHEET.worksheet(f'{worksheet}_{year}')
+    row_to_update = worksheet_to_update.find(date).row
+    total_column = worksheet_to_update.find('Total').col
+
+    total = 0
+    for num in data[1:]:
+        total += int(num)
+    # Update "Total" column in specified worksheet
+    worksheet_to_update.update_cell(row_to_update, total_column, total)
+    
+    if worksheet == 'income':
+        card_column = worksheet_to_update.find('Card').col
+        card_value = worksheet_to_update.cell(row_to_update, card_column).value
+        cash_column = worksheet_to_update.find('Cash').col
+
+        cash = total - int(card_value)
+        # Update "Cash" column in specified worksheet
+        worksheet_to_update.update_cell(row_to_update, cash_column, cash)
+        
+        print('Cash and')
+
+    print('Total sum calculated.\n')
+    
+
 def main():
     income_data = record_income_data(2023)
     update_worksheet(income_data, 'income')
+    calculate_totals(income_data, 'income')
 
 main()
