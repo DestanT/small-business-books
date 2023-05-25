@@ -16,33 +16,40 @@ GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open('small_business_books')
 
 
-def record_income_data(year):
+def record_data(worksheet, year):
     """
-    Get income data input from the user.
+    Get the date and data from the user,
+    returns data given as a list.
     """
     headings_string = ''
-    headings_list = SHEET.worksheet(f'income_{year}').row_values(1)
+    headings_list = SHEET.worksheet(f'{worksheet}_{year}').row_values(1)
 
-    # Ignores last 2 columns: cash, total.
+    # Ignores last 2 columns: cash and total columns in "income" worksheets,
+    # Or the "empty" and total columns in "expense" worksheets.
     for heading in headings_list[0:-3]:
         headings_string += heading + ', '
     headings_string += headings_list[-3] # Adds string without the ","
 
+    # Gives user correctly lengthed example of input.
+    example_print = ''
+    for i in range(len(headings_list[0:-3])): # -3 because date index not considered.
+        example_print += ',305'
+
     while True:
-        print('Enter the date and income data, separated by commas.')
+        print(f'Enter the date and {worksheet} data, separated by commas.')
         print('Data should be in the corresponding order:\n')
         print(headings_string)
-        print('Example: DD/MM/YYYY,500,600,700,800,500,400\n')
+        print(f'Example: DD/MM/YYYY{example_print}\n')
 
         data_str = input('Enter your data here:\n')
 
-        income_data = data_str.split(',')
+        data_list = data_str.split(',')
 
-        if validate_data(income_data, headings_list[0:-2]):
+        if validate_data(data_list, headings_list[0:-2]):
             print('Data is valid!\n')
             break
 
-    return income_data
+    return data_list
 
 
 def validate_data(data, headings):
@@ -125,8 +132,13 @@ def calculate_totals(data, worksheet):
     
 
 def main():
-    income_data = record_income_data(2023)
+    income_data = record_data('income', 2023)
     update_worksheet(income_data, 'income')
     calculate_totals(income_data, 'income')
+
+    expense_data = record_data('expense', 2023)
+    update_worksheet(expense_data, 'expense')
+    calculate_totals(expense_data, 'expense')
+
 
 main()
