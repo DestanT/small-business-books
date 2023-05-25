@@ -39,7 +39,7 @@ def record_income_data(year):
         income_data = data_str.split(',')
 
         if validate_data(income_data, headings_list[0:-2]):
-            print('Data is valid!')
+            print('Data is valid!\n')
             break
 
     return income_data
@@ -55,7 +55,7 @@ def validate_data(data, headings):
     # CREDIT - datetime method:
     # https://paperbun.org/validate-date-string-format-in-python/
     try:
-        datetime.strptime(data[0], '%d/%m/%Y') # Checks date only
+        datetime.strptime(data[0], '%d/%m/%Y') # Checks date; index 0
         [int(value) for value in data[1:]] # Skips date index
         if len(data) != len(headings):
             raise ValueError(
@@ -70,7 +70,30 @@ def validate_data(data, headings):
     
     return True
 
+
+def update_worksheet(data, worksheet):
+    """
+    Receives a data list, finds the date associated with data,
+    and updates specified worksheet.
+    """
+    date = data[0]
+    date_list = date.split('/')
+    year = date_list[2]
     
-    
-    
-record_income_data(2023)
+    print(f'Updating "{worksheet}_{year}" worksheet...\n')
+
+    worksheet_to_update = SHEET.worksheet(f'{worksheet}_{year}')
+    row_to_update = worksheet_to_update.find(date).row
+         
+    income_data = [value for value in data]
+    for i in range(len(income_data)):
+        worksheet_to_update.update_cell(row_to_update, i + 1, income_data[i])
+
+    print(f'"{worksheet}_{year}" worksheet updated successfully.\n')
+
+
+def main():
+    income_data = record_income_data(2023)
+    update_worksheet(income_data, 'income')
+
+main()
