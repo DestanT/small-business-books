@@ -1,6 +1,7 @@
 import gspread
 from google.oauth2.service_account import Credentials
 from datetime import datetime
+import plotext as plt
 
 # Code taken from Code Institute's "Love Sandwiches" project
 SCOPE = [
@@ -112,7 +113,7 @@ def calculate_totals(worksheet, data):
     total_column = worksheet_to_update.find('Total').col
 
     total = 0
-    for num in data[1:]:
+    for num in data[1:-1]: # ignores date[1] and card[-1] payments
         total += int(num)
     # Update "Total" column in specified worksheet
     worksheet_to_update.update_cell(row_to_update, total_column, total)
@@ -166,18 +167,22 @@ def input_time_period():
         else:
             continue
 
+
+# def print_table_data(start_end_dates_list):
+
+
     
 def main():
-    # income_data = record_data('income', 2023)
-    # update_worksheet('income', income_data)
-    # calculate_totals('income', income_data)
+    income_data = record_data('income', 2023)
+    update_worksheet('income', income_data)
+    calculate_totals('income', income_data)
 
-    # expense_data = record_data('expense', 2023)
-    # update_worksheet('expense', expense_data)
-    # calculate_totals('expense', expense_data)
+    expense_data = record_data('expense', 2023)
+    update_worksheet('expense', expense_data)
+    calculate_totals('expense', expense_data)
 
-    dates = input_time_period()
-    print(dates)
+    # time_period = input_time_period()
+    # print_table_data(time_period)
 
 
 main()
