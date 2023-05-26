@@ -168,21 +168,74 @@ def input_time_period():
             continue
 
 
-# def print_table_data(start_end_dates_list):
+def get_data_dict(worksheet, dates):
+    """
+    Takes the worksheet and start/end dates as arguments,
+    compiles a data_dict for all data within dates.
+    Returns time_period_data as a list of dicts.
+    """
+    # Start date
+    start_date = dates[0]
+    temp_list = start_date.split('/')
+    start_year = temp_list[2]
+    # End date
+    end_date = dates[1]
+    temp_list = end_date.split('/')
+    end_year = temp_list[2]
 
+    if start_year == end_year:
+        desired_worksheet = SHEET.worksheet(f'{worksheet}_{start_year}')
+        list_of_dicts = desired_worksheet.get_all_records()
+
+        start_date_row = desired_worksheet.find(start_date).row
+        end_date_row = desired_worksheet.find(end_date).row
+
+        # -2 and -1 indices due to google sheets numbering convention
+        time_period_data = list_of_dicts[start_date_row-2 : end_date_row-1]
+        return time_period_data
+    else:
+        # Start date
+        desired_worksheet = SHEET.worksheet(f'{worksheet}_{start_year}')
+        start_date_dicts = desired_worksheet.get_all_records()
+        start_date_row = desired_worksheet.find(start_date).row
+
+        # last day of that year
+        end_date_row = desired_worksheet.find(f'31/12/{start_year}').row
+
+        # data dict: start_date - 31st December
+        start_date_data = start_date_dicts[start_date_row-2 : end_date_row-1]
+
+
+        # End date
+        desired_worksheet = SHEET.worksheet(f'{worksheet}_{end_year}')
+        end_date_dicts = desired_worksheet.get_all_records()
+        end_date_row = desired_worksheet.find(end_date).row
+
+        # first day of the year
+        start_date_row = desired_worksheet.find(f'01/01/{end_year}').row
+
+        # data dict: 1st January - end_date
+        end_date_data = end_date_dicts[start_date_row-2 : end_date_row-1]
+
+        # dict to combine both start and end date dicts
+        time_period_data = start_date_data + end_date_data
+        return time_period_data
+
+    
+    
 
     
 def main():
-    income_data = record_data('income', 2023)
-    update_worksheet('income', income_data)
-    calculate_totals('income', income_data)
+    # income_data = record_data('income', 2023)
+    # update_worksheet('income', income_data)
+    # calculate_totals('income', income_data)
 
-    expense_data = record_data('expense', 2023)
-    update_worksheet('expense', expense_data)
-    calculate_totals('expense', expense_data)
+    # expense_data = record_data('expense', 2023)
+    # update_worksheet('expense', expense_data)
+    # calculate_totals('expense', expense_data)
 
-    # time_period = input_time_period()
-    # print_table_data(time_period)
+    time_period = input_time_period()
+    get_data_dict('income', time_period)
 
 
 main()
