@@ -178,6 +178,7 @@ def get_data_dict(worksheet, dates):
     start_date = dates[0]
     temp_list = start_date.split('/')
     start_year = temp_list[2]
+    
     # End date
     end_date = dates[1]
     temp_list = end_date.split('/')
@@ -194,16 +195,38 @@ def get_data_dict(worksheet, dates):
         time_period_data = list_of_dicts[start_date_row-2 : end_date_row-1]
         return time_period_data
     else:
+        time_period_data = []
+
         # Start date
         desired_worksheet = SHEET.worksheet(f'{worksheet}_{start_year}')
         start_date_dicts = desired_worksheet.get_all_records()
         start_date_row = desired_worksheet.find(start_date).row
 
         # last day of that year
-        end_date_row = desired_worksheet.find(f'31/12/{start_year}').row
+        last_row = desired_worksheet.find(start_date_dicts[-1]['Date']).row
 
         # data dict: start_date - 31st December
-        start_date_data = start_date_dicts[start_date_row-2 : end_date_row-1]
+        start_date_data = start_date_dicts[start_date_row-2 : last_row-1]
+
+        # extends list
+        time_period_data.extend(start_date_data)
+
+
+        # List of all the years inbetween start and end year
+        years = [year for year in range(int(start_year)+1, int(end_year))]
+
+        # For loop only runs if 'years' variable has values in list 
+        for year in years:
+            desired_worksheet = SHEET.worksheet(f'{worksheet}_{year}')
+            data_dicts = desired_worksheet.get_all_records()
+            
+            first_row = desired_worksheet.find(data_dicts[0]['Date']).row
+            last_row = desired_worksheet.find(data_dicts[-1]['Date']).row
+
+            date_data = data_dicts[first_row-2 : last_row-1]
+            
+            # extends list
+            time_period_data.extend(date_data)
 
 
         # End date
@@ -212,17 +235,14 @@ def get_data_dict(worksheet, dates):
         end_date_row = desired_worksheet.find(end_date).row
 
         # first day of the year
-        start_date_row = desired_worksheet.find(f'01/01/{end_year}').row
+        first_row = desired_worksheet.find(end_date_dicts[0]['Date']).row
 
         # data dict: 1st January - end_date
-        end_date_data = end_date_dicts[start_date_row-2 : end_date_row-1]
+        end_date_data = end_date_dicts[first_row-2 : end_date_row-1]
 
-        # dict to combine both start and end date dicts
-        time_period_data = start_date_data + end_date_data
+        # extends list
+        time_period_data.extend(end_date_data)
         return time_period_data
-
-    
-    
 
     
 def main():
@@ -235,7 +255,9 @@ def main():
     # calculate_totals('expense', expense_data)
 
     time_period = input_time_period()
-    get_data_dict('income', time_period)
+    test = get_data_dict('income', time_period)
+    print(test)
 
 
 main()
+
