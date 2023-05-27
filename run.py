@@ -212,7 +212,7 @@ def get_data_dict(worksheet, dates):
         time_period_data.extend(start_date_data)
 
 
-        # List of all the years inbetween start and end year
+        # List of all the years inbetween start and end year, if any
         years = [year for year in range(int(start_year)+1, int(end_year))]
 
         # For loop only runs if 'years' variable has values in list 
@@ -244,6 +244,54 @@ def get_data_dict(worksheet, dates):
         time_period_data.extend(end_date_data)
         return time_period_data
 
+
+def choose_key_values(list_of_dicts):
+    """
+    Takes key values from the first dict, [0], in argument,
+    asks the user to input choices from those keys only.
+    Returns list of choice indices.
+    """
+    # Get list of keys
+    keys = [key for key in list_of_dicts[0]]
+    # Change key names to lowercase, for later use
+    temp = [key.lower() for key in keys]
+    keys = temp
+
+    # Ignores [0], date
+    choice_headings = ''
+    for heading in keys[1:-1]:
+        choice_headings += heading.capitalize() + ','
+    choice_headings += keys[-1] # Adds string without the ","
+    
+    while True:
+        print('From the list below, select the data you want to display,')
+        print('in the order in which you want to display it:')
+        print('(separated by commas)\n')
+        print(f'{choice_headings}\n')
+        
+        choices = input()
+
+        # List of choices
+        choices_list = choices.lower().split(',')
+        # Change choice strings to lowercase
+        temp = [choice.lower() for choice in choices_list]
+        choices_list = temp
+
+        choices_indices = []
+        try:
+            for choice in range(len(choices_list)):
+                # Ignores [0], date
+                index = keys[1:].index(choices_list[choice])
+                # Therefore +1 to index value
+                choices_indices.extend([index + 1])
+        except ValueError as e:
+            print(f'{e}, please try again:\n')
+            continue
+        
+        break
+
+    return choices_indices
+
     
 def main():
     # income_data = record_data('income', 2023)
@@ -254,10 +302,32 @@ def main():
     # update_worksheet('expense', expense_data)
     # calculate_totals('expense', expense_data)
 
-    time_period = input_time_period()
-    test = get_data_dict('income', time_period)
-    print(test)
+    # time_period = input_time_period()
+    # time_period_data = get_data_dict('income', time_period)
+
+    # delete the delete variable, plug time_period_data back in
+    delete = get_data_dict('income', ['01/01/2022', '02/01/2022'])
+    charts = choose_key_values(delete)
+
 
 
 main()
 
+# keys = ['Date', 'John', 'Susan', 'Carol', 'Mario', 'Retail', 'Card', 'Cash', 'Total']
+# print(keys)
+# temp = [key.lower() for key in keys]
+# keys = temp
+# print(keys)
+# choices = input()
+
+# choices_list = choices.split(',')
+
+# choices_indices = []
+# try:
+#     for choice in range(len(choices_list)):
+#         index = keys[1:].index(choices_list[choice])
+#         choices_indices.extend([index + 1])
+# except ValueError as e:
+#     print(f'{e}, please try again:\n')
+
+# print(choices_indices)
