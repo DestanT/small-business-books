@@ -245,7 +245,7 @@ def get_data_dict(worksheet, dates):
         return time_period_data
 
 
-def choose_key_values(list_of_dicts):
+def input_key_values(list_of_dicts):
     """
     Takes key values from the first dict, [0], in argument,
     asks the user to input choices from those keys only.
@@ -307,7 +307,7 @@ def main():
 
     # delete the delete variable, plug time_period_data back in
     delete = get_data_dict('income', ['01/01/2022', '02/01/2022'])
-    charts = choose_key_values(delete)
+    charts = input_key_values(delete)
 
 
 
