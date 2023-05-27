@@ -253,16 +253,17 @@ def input_key_values(list_of_dicts):
     """
     # Get list of keys
     keys = [key for key in list_of_dicts[0]]
-    # Change key names to lowercase, for later use
-    temp = [key.lower() for key in keys]
-    keys = temp
 
     # Ignores [0], date
     choice_headings = ''
     for heading in keys[1:-1]:
-        choice_headings += heading.capitalize() + ','
+        choice_headings += heading + ','
     choice_headings += keys[-1] # Adds string without the ","
-    
+
+    # Change key names to lowercase, for later use
+    temp = [key.lower() for key in keys]
+    keys = temp
+
     while True:
         print('From the list below, select the data you want to display,')
         print('in the order in which you want to display it:')
@@ -289,8 +290,12 @@ def input_key_values(list_of_dicts):
             continue
         
         break
-
+    
     return choices_indices
+
+
+# def concatenate_data(list_of_dicts, indices):
+
 
     
 def main():
