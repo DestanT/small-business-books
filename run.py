@@ -296,8 +296,29 @@ def input_key_values(list_of_dicts):
     return choices_list
 
 
-# def concatenate_data(indices):
-    
+def concatenate_data(labels, data_dict):
+    """
+    Takes the chosen labels and loops through data_dict,
+    groups the data from the key-value pairs (of label) into a list of lists.
+    Also makes a list of all dates from the data_dict.
+    Returns tuple of (dates as [] and data as [[x], [y], [z], ...])
+    """
+    # Puts dates in a list
+    dates_list = []
+
+    for x in range(len(data_dict)):
+        dates_list.append(data_dict[x]['Date'])
+
+    # Puts data in a list of lists: [[data1], [data2], [data3]] etc.
+    data_list = []
+
+    for item in labels:
+        new_list = []
+        for x in range(len(data_dict)):
+            new_list.append(data_dict[x][item])
+        data_list.append(new_list)
+        
+    return dates_list, data_list
 
     
 def main():
@@ -313,10 +334,10 @@ def main():
     # time_period_data = get_data_dict('income', time_period)
 
     # delete the delete variable, plug time_period_data back in
-    delete = get_data_dict('income', ['01/01/2022', '02/01/2022'])
-    charts = input_key_values(delete)
-    # test = concatenate_data(charts)
-
+    delete = get_data_dict('income', ['01/01/2022', '04/01/2022'])
+    list = input_key_values(delete)
+    test = concatenate_data(list, delete)
+    print(test)
 
 
 main()
