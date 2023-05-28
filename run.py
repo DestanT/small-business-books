@@ -320,6 +320,18 @@ def concatenate_data(labels, data_dict):
         
     return dates_list, data_list
 
+
+def print_bar_chart(labels, data_tuple):
+    """
+
+    """
+    dates_list = data_tuple[0]
+    data_lists = data_tuple[1]
+    
+    plt.multiple_bar(dates_list, data_lists, label = labels)
+    plt.title("Bar Chart")
+    plt.show()
+    
     
 def main():
     # income_data = record_data('income', 2023)
@@ -330,14 +342,12 @@ def main():
     # update_worksheet('expense', expense_data)
     # calculate_totals('expense', expense_data)
 
-    # time_period = input_time_period()
-    # time_period_data = get_data_dict('income', time_period)
+    time_period = input_time_period()
+    time_period_data = get_data_dict('income', time_period)
 
-    # delete the delete variable, plug time_period_data back in
-    delete = get_data_dict('income', ['01/01/2022', '04/01/2022'])
-    list = input_key_values(delete)
-    test = concatenate_data(list, delete)
-    print(test)
+    key_values = input_key_values(time_period_data)
+    data_tuple = concatenate_data(key_values, time_period_data)
+    print_bar_chart(key_values, data_tuple)
 
 
 main()
