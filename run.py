@@ -249,7 +249,7 @@ def input_key_values(list_of_dicts):
     """
     Takes key values from the first dict, [0], in argument,
     asks the user to input choices from those keys only.
-    Returns list of choice indices.
+    Returns list of choices.
     """
     # Get list of keys
     keys = [key for key in list_of_dicts[0]]
@@ -263,7 +263,7 @@ def input_key_values(list_of_dicts):
     # Change key names to lowercase, for later use
     temp = [key.lower() for key in keys]
     keys = temp
-
+    
     while True:
         print('From the list below, select the data you want to display,')
         print('in the order in which you want to display it:')
@@ -273,29 +273,31 @@ def input_key_values(list_of_dicts):
         choices = input()
 
         # List of choices
-        choices_list = choices.lower().split(',')
+        input_list = choices.split(',')
         # Change choice strings to lowercase
-        temp = [choice.lower() for choice in choices_list]
-        choices_list = temp
+        temp = [choice.lower() for choice in input_list]
+        input_list = temp
 
-        choices_indices = []
+        choices_list = []
         try:
-            for choice in range(len(choices_list)):
-                # Ignores [0], date
-                index = keys[1:].index(choices_list[choice])
-                # Therefore +1 to index value
-                choices_indices.extend([index + 1])
+            for x in range(len(input_list)):
+                # Ignores [0], date - checks if input is in keys list,
+                # otherwise returns ValueError
+                keys[1:].index(input_list[x])
+
+                # Re-capitalize and append to list
+                choices_list.append(input_list[x].capitalize())
         except ValueError as e:
-            print(f'{e}, please try again:\n')
+            print(f'{e}, please try again...\n')
             continue
         
         break
     
-    return choices_indices
+    return choices_list
 
 
-# def concatenate_data(list_of_dicts, indices):
-
+# def concatenate_data(indices):
+    
 
     
 def main():
@@ -313,26 +315,8 @@ def main():
     # delete the delete variable, plug time_period_data back in
     delete = get_data_dict('income', ['01/01/2022', '02/01/2022'])
     charts = input_key_values(delete)
+    # test = concatenate_data(charts)
 
 
 
 main()
-
-# keys = ['Date', 'John', 'Susan', 'Carol', 'Mario', 'Retail', 'Card', 'Cash', 'Total']
-# print(keys)
-# temp = [key.lower() for key in keys]
-# keys = temp
-# print(keys)
-# choices = input()
-
-# choices_list = choices.split(',')
-
-# choices_indices = []
-# try:
-#     for choice in range(len(choices_list)):
-#         index = keys[1:].index(choices_list[choice])
-#         choices_indices.extend([index + 1])
-# except ValueError as e:
-#     print(f'{e}, please try again:\n')
-
-# print(choices_indices)
