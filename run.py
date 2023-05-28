@@ -249,7 +249,7 @@ def input_key_values(list_of_dicts):
     """
     Takes key values from the first dict, [0], in argument,
     asks the user to input choices from those keys only.
-    Returns list of choices.
+    Returns list of labels.
     """
     # Get list of keys
     keys = [key for key in list_of_dicts[0]]
@@ -278,7 +278,7 @@ def input_key_values(list_of_dicts):
         temp = [choice.lower() for choice in input_list]
         input_list = temp
 
-        choices_list = []
+        labels_list = []
         try:
             for x in range(len(input_list)):
                 # Ignores [0], date - checks if input is in keys list,
@@ -286,14 +286,14 @@ def input_key_values(list_of_dicts):
                 keys[1:].index(input_list[x])
 
                 # Re-capitalize and append to list
-                choices_list.append(input_list[x].capitalize())
+                labels_list.append(input_list[x].capitalize())
         except ValueError as e:
             print(f'{e}, please try again...\n')
             continue
         
         break
     
-    return choices_list
+    return labels_list
 
 
 def concatenate_data(labels, data_dict):
