@@ -322,9 +322,9 @@ def concatenate_data(labels, data_dict):
     return dates_list, data_list
 
 
-def print_bar_chart(labels, data_tuple):
+def print_daily_chart(labels, data_tuple):
     """
-    Prints a bar chart to the terminal using the plotext library.
+    Prints daily plotext bar chart to the terminal
     """
     dates_list = data_tuple[0]
     data_lists = data_tuple[1]
@@ -344,6 +344,41 @@ def print_bar_chart(labels, data_tuple):
     plt.theme('dark')
     plt.yticks([200 * i for i in range(yticks_range)])
     plt.show()
+
+
+def print_weekly_chart(labels, data_tuple):
+    """
+    Prints weekly plotext bar chart to the terminal
+    """
+    print('weekly chart')
+
+
+def print_monthly_chart(labels, data_tuple):
+    """
+    Prints monthly plotext bar chart to the terminal
+    """
+    pass
+
+
+def print_bar_chart(labels, data_tuple):
+    """
+    Depending on number of dates selected by user,
+    chooses to present plotext bar chart in;
+    daily, weekly or monthly format.
+    """
+    dates_list = data_tuple[0]
+
+    # Under 2 weeks; present daily chart
+    if len(dates_list) <= 14:
+        print_daily_chart(labels, data_tuple)
+
+    # Under 14 weeks; present weekly chart
+    elif len(dates_list) <= 98:
+        print_weekly_chart(labels, data_tuple)
+
+    # Everything else; present monthly chart
+    else:
+        print_monthly_chart(labels, data_tuple)
     
     
 def main():
