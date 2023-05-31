@@ -2,6 +2,7 @@ import gspread
 from google.oauth2.service_account import Credentials
 from datetime import datetime
 import plotext as plt
+import math
 
 # Code taken from Code Institute's "Love Sandwiches" project
 SCOPE = [
@@ -327,31 +328,41 @@ def print_bar_chart(labels, data_tuple):
     """
     dates_list = data_tuple[0]
     data_lists = data_tuple[1]
+
+    # Finds max value from all lists in data_lists
+    max_value_list = []
+    for i in range(len(data_lists)):
+        max_value = max(data_lists[i])
+        max_value_list.append(max_value)
+
+    # Calculate yticks in plotext using max_value_list
+    yticks_range = math.ceil((max(max_value_list) / 200))
     
+    # Plotext terminal plots
     plt.multiple_bar(dates_list, data_lists, label = labels)
     plt.title("Bar Chart")
     plt.theme('dark')
-    plt.yticks([200 * i for i in range(7)])
+    plt.yticks([200 * i for i in range(yticks_range)])
     plt.show()
     
     
 def main():
-    income_data = record_data('income', 2023)
-    update_worksheet('income', income_data)
-    calculate_totals('income', income_data)
+    # income_data = record_data('income', 2023)
+    # update_worksheet('income', income_data)
+    # calculate_totals('income', income_data)
 
-    expense_data = record_data('expense', 2023)
-    update_worksheet('expense', expense_data)
-    calculate_totals('expense', expense_data)
+    # expense_data = record_data('expense', 2023)
+    # update_worksheet('expense', expense_data)
+    # calculate_totals('expense', expense_data)
 
-    time_period = input_time_period()
-    time_period_data = get_data_dict('income', time_period)
+    # time_period = input_time_period()
+    # time_period_data = get_data_dict('income', time_period)
     
-    key_values = input_key_values(time_period_data)
-    data_tuple = concatenate_data(key_values, time_period_data)
+    # key_values = input_key_values(time_period_data)
+    # data_tuple = concatenate_data(key_values, time_period_data)
     
-    print_bar_chart(key_values, data_tuple)
-    # print_bar_chart(['John', 'Susan', 'Carol', 'Mario', 'Retail'], (['01/01/2022', '02/01/2022', '03/01/2022', '04/01/2022', '05/01/2022', '06/01/2022', '07/01/2022', '08/01/2022', '09/01/2022', '10/01/2022', '11/01/2022', '12/01/2022', '13/01/2022', '14/01/2022', '15/01/2022', '16/01/2022', '17/01/2022', '18/01/2022', '19/01/2022', '20/01/2022', '21/01/2022', '22/01/2022', '23/01/2022', '24/01/2022', '25/01/2022', '26/01/2022', '27/01/2022', '28/01/2022', '29/01/2022', '30/01/2022', '31/01/2022'], [[470, 664, 604, 995, 775, 927, 512, 531, 751, 609, 456, 1061, 821, 954, 1011, 396, 952, 768, 437, 354, 557, 761, 491, 570, 359, 1161, 846, 1056, 452, 883, 693], [704, 960, 626, 748, 814, 900, 852, 362, 1154, 707, 1012, 753, 822, 1018, 584, 1166, 762, 470, 1135, 638, 860, 1077, 828, 1018, 836, 598, 462, 1198, 693, 431, 393], [1042, 1000, 722, 1050, 581, 736, 461, 927, 724, 506, 369, 1075, 1193, 767, 379, 553, 1002, 438, 1001, 1173, 861, 1180, 1060, 649, 1093, 845, 1019, 678, 1184, 790, 985], [694, 1151, 439, 1070, 638, 475, 849, 778, 1057, 907, 1014, 1016, 1198, 474, 789, 602, 780, 620, 549, 899, 826, 485, 1149, 992, 812, 688, 1099, 453, 1030, 455, 523], [441, 294, 115, 137, 230, 475, 354, 206, 312, 334, 480, 362, 165, 179, 459, 167, 309, 449, 416, 497, 138, 137, 351, 415, 490, 511, 157, 365, 231, 147, 128]]))
+    # print_bar_chart(key_values, data_tuple)
+    print_bar_chart(['John', 'Susan', 'Carol', 'Mario', 'Retail'], (['01/01/2022', '02/01/2022', '03/01/2022', '04/01/2022', '05/01/2022', '06/01/2022', '07/01/2022', '08/01/2022', '09/01/2022', '10/01/2022', '11/01/2022', '12/01/2022', '13/01/2022', '14/01/2022', '15/01/2022', '16/01/2022', '17/01/2022', '18/01/2022', '19/01/2022', '20/01/2022', '21/01/2022', '22/01/2022', '23/01/2022', '24/01/2022', '25/01/2022', '26/01/2022', '27/01/2022', '28/01/2022', '29/01/2022', '30/01/2022', '31/01/2022'], [[470, 664, 604, 995, 775, 927, 512, 531, 751, 609, 456, 1061, 821, 954, 1011, 396, 952, 768, 437, 354, 557, 761, 491, 570, 359, 1161, 846, 1056, 452, 883, 693], [704, 960, 626, 748, 814, 900, 852, 362, 1154, 707, 1012, 753, 822, 1018, 584, 1166, 762, 470, 1135, 638, 860, 1077, 828, 1018, 836, 598, 462, 1198, 693, 431, 393], [1042, 1000, 722, 1050, 581, 736, 461, 927, 724, 506, 369, 1075, 1193, 767, 379, 553, 1002, 438, 1001, 1173, 861, 1180, 1060, 649, 1093, 845, 1019, 678, 1184, 790, 985], [694, 1151, 439, 1070, 638, 475, 849, 778, 1057, 907, 1014, 1016, 1198, 474, 789, 602, 780, 620, 549, 899, 826, 485, 1149, 992, 812, 688, 1099, 453, 1030, 455, 523], [441, 294, 115, 137, 230, 475, 354, 206, 312, 334, 480, 362, 165, 179, 459, 167, 309, 449, 416, 497, 138, 137, 351, 415, 490, 511, 157, 365, 231, 147, 128]]))
 
 
 main()
