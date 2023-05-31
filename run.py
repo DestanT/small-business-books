@@ -350,7 +350,43 @@ def print_weekly_chart(labels, data_tuple):
     """
     Prints weekly plotext bar chart to the terminal
     """
-    print('weekly chart')
+    dates_list = data_tuple[0]
+    data_lists = data_tuple[1]
+    
+    # New list of dates, every 7 days
+    week_start_date = dates_list[0::7]
+
+    # Number of days divided by 7 to get weeks, rounded up
+    weeks = math.ceil(len(data_lists[0]) / 7)
+
+    # This will be the "new" and summed up data_lists used for plotext
+    totals_data_lists = []
+
+    # For loop length depending on how many "key" values were chosen
+    for x in range(len(data_lists)):
+        separated_data_list = data_lists[x]
+        
+        weekly_total = []
+        for y in range(weeks):
+            weekly_total.append(sum(separated_data_list[(y * 7) : (y * 7 + 7)]))
+        
+        totals_data_lists.append(weekly_total)
+    
+    # Finds max value from all lists in data_lists
+    max_value_list = []
+    for i in range(len(totals_data_lists)):
+        max_value = max(totals_data_lists[i])
+        max_value_list.append(max_value)
+
+    # Calculate yticks in plotext using max_value_list
+    yticks_range = math.ceil((max(max_value_list) / 1000))
+    
+    # Plotext terminal plots
+    plt.multiple_bar(week_start_date, totals_data_lists, label = labels)
+    plt.title("Bar Chart")
+    plt.theme('dark')
+    plt.yticks([1000 * i for i in range(yticks_range)])
+    plt.show()  
 
 
 def print_monthly_chart(labels, data_tuple):
