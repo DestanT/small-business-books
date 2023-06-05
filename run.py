@@ -309,6 +309,8 @@ def concatenate_data(labels, data_dict):
     Also makes a list of all dates from the data_dict.
     Returns tuple of (dates as [] and data as [[x], [y], [z], ...])
     """
+    print('Sorting data according to parameters chosen...')
+
     # Puts dates in a list
     dates_list = []
 
