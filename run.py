@@ -164,6 +164,7 @@ def input_time_period():
             pass
 
         if validate_data([end_date], [1]):
+            print(f'From {start_date} to {end_date} selected.')
             return [start_date, end_date]
         else:
             continue
@@ -395,7 +396,6 @@ def print_monthly_chart(labels, data_tuple):
     """
     dates_list = data_tuple[0]
     data_lists = data_tuple[1]
-    print(data_lists)
 
     temp_list = []
     # Re-format to 'datetime'
