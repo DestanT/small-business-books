@@ -187,6 +187,7 @@ def get_data_dict(worksheet, dates):
     end_year = temp_list[2]
 
     if start_year == end_year:
+        print(f'Data between {start_date} and {end_date} from "{worksheet}_{start_year}" is being compiled...')
         desired_worksheet = SHEET.worksheet(f'{worksheet}_{start_year}')
         list_of_dicts = desired_worksheet.get_all_records()
 
@@ -200,6 +201,7 @@ def get_data_dict(worksheet, dates):
         time_period_data = []
 
         # Start date
+        print(f'Data between {start_date} and 31/12/{start_year} from "{worksheet}_{start_year}" is being compiled...')
         desired_worksheet = SHEET.worksheet(f'{worksheet}_{start_year}')
         start_date_dicts = desired_worksheet.get_all_records()
         start_date_row = desired_worksheet.find(start_date).row
@@ -219,6 +221,7 @@ def get_data_dict(worksheet, dates):
 
         # For loop only runs if 'years' variable has values in list 
         for year in years:
+            print(f'Data from "{worksheet}_{year}" is being compiled...')
             desired_worksheet = SHEET.worksheet(f'{worksheet}_{year}')
             data_dicts = desired_worksheet.get_all_records()
             
@@ -232,6 +235,7 @@ def get_data_dict(worksheet, dates):
 
 
         # End date
+        print(f'Data between 01/01/{end_year} and {end_date} from "{worksheet}_{end_year}" is being compiled...')
         desired_worksheet = SHEET.worksheet(f'{worksheet}_{end_year}')
         end_date_dicts = desired_worksheet.get_all_records()
         end_date_row = desired_worksheet.find(end_date).row
