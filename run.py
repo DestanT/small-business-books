@@ -6,9 +6,9 @@ import math
 
 # Code taken from Code Institute's "Love Sandwiches" project
 SCOPE = [
-    "https://www.googleapis.com/auth/spreadsheets",
-    "https://www.googleapis.com/auth/drive.file",
-    "https://www.googleapis.com/auth/drive"
+    'https://www.googleapis.com/auth/spreadsheets',
+    'https://www.googleapis.com/auth/drive.file',
+    'https://www.googleapis.com/auth/drive'
     ]
     
 # Code taken from Code Institute's "Love Sandwiches" project
@@ -28,13 +28,11 @@ def record_data(worksheet, year):
 
     # Ignores last 2 columns: cash and total columns in "income" worksheets,
     # Or the "empty" and total columns in "expense" worksheets.
-    for heading in headings_list[0:-3]:
-        headings_string += heading + ', '
-    headings_string += headings_list[-3] # Adds string without the ","
+    headings_string += ','.join(headings_list[0:-2])
 
     # Gives user correctly lengthed example of input.
     example_print = ''
-    for i in range(len(headings_list[0:-3])): # -3 because date index not considered.
+    for i in range(len(headings_list[0:-3])): # -3 because date index, also, not considered.
         example_print += ',305'
 
     while True:
@@ -89,7 +87,7 @@ def update_worksheet(worksheet, data):
     date_list = date.split('/')
     year = date_list[2]
     
-    print(f'Updating "{worksheet}_{year}" worksheet...\n')
+    print(f"Updating '{worksheet}_{year}' worksheet...\n")
     worksheet_to_update = SHEET.worksheet(f'{worksheet}_{year}')
     row_to_update = worksheet_to_update.find(date).row
          
@@ -97,13 +95,13 @@ def update_worksheet(worksheet, data):
     for i in range(len(income_data)):
         worksheet_to_update.update_cell(row_to_update, i + 1, income_data[i])
 
-    print(f'"{worksheet}_{year}" worksheet updated successfully.\n')
+    print(f"'{worksheet}_{year}' worksheet updated successfully.\n")
 
 
 def calculate_totals(worksheet, data):
     """
     Calculates total sums and updates specified worksheet.
-    If worksheet == 'income'; calculates cash value for the day.
+    If worksheet == "income"; calculates cash value for the day.
     """
     date = data[0]
     date_list = date.split('/')
@@ -187,7 +185,7 @@ def get_data_dict(worksheet, dates):
     end_year = temp_list[2]
 
     if start_year == end_year:
-        print(f'Data between {start_date} and {end_date} from "{worksheet}_{start_year}" is being compiled...')
+        print(f"Data between {start_date} and {end_date} from '{worksheet}_{start_year}' is being compiled...")
         desired_worksheet = SHEET.worksheet(f'{worksheet}_{start_year}')
         list_of_dicts = desired_worksheet.get_all_records()
 
@@ -200,8 +198,8 @@ def get_data_dict(worksheet, dates):
     else:
         time_period_data = []
 
-        # Start date
-        print(f'Data between {start_date} and 31/12/{start_year} from "{worksheet}_{start_year}" is being compiled...')
+        # Start date - till the end of the year
+        print(f"Data between {start_date} and 31/12/{start_year} from '{worksheet}_{start_year}' is being compiled...")
         desired_worksheet = SHEET.worksheet(f'{worksheet}_{start_year}')
         start_date_dicts = desired_worksheet.get_all_records()
         start_date_row = desired_worksheet.find(start_date).row
@@ -219,9 +217,9 @@ def get_data_dict(worksheet, dates):
         # List of all the years inbetween start and end year, if any
         years = [year for year in range(int(start_year)+1, int(end_year))]
 
-        # For loop only runs if 'years' variable has values in list 
+        # For loop only runs if "years" variable has values in list 
         for year in years:
-            print(f'Data from "{worksheet}_{year}" is being compiled...')
+            print(f"Data from '{worksheet}_{year}' is being compiled...")
             desired_worksheet = SHEET.worksheet(f'{worksheet}_{year}')
             data_dicts = desired_worksheet.get_all_records()
             
@@ -235,7 +233,7 @@ def get_data_dict(worksheet, dates):
 
 
         # End date
-        print(f'Data between 01/01/{end_year} and {end_date} from "{worksheet}_{end_year}" is being compiled...')
+        print(f"Data between 01/01/{end_year} and {end_date} from '{worksheet}_{end_year}' is being compiled...")
         desired_worksheet = SHEET.worksheet(f'{worksheet}_{end_year}')
         end_date_dicts = desired_worksheet.get_all_records()
         end_date_row = desired_worksheet.find(end_date).row
@@ -262,9 +260,7 @@ def input_key_values(list_of_dicts):
 
     # Ignores [0], date
     choice_headings = ''
-    for heading in keys[1:-1]:
-        choice_headings += heading + ','
-    choice_headings += keys[-1] # Adds string without the ","
+    choice_headings += ','.join(keys[1:])
 
     # Change key names to lowercase, for later use
     temp = [key.lower() for key in keys]
@@ -347,7 +343,7 @@ def print_daily_chart(labels, data_tuple):
     
     # Plotext terminal plots
     plt.multiple_bar(dates_list, data_lists, label = labels)
-    plt.title("Bar Chart")
+    plt.title('Daily Bar Chart')
     plt.theme('dark')
     plt.yticks([200 * i for i in range(yticks_range)])
     plt.show()
@@ -390,7 +386,7 @@ def print_weekly_chart(labels, data_tuple):
     
     # Plotext terminal plots
     plt.multiple_bar(week_start_date, totals_data_lists, label = labels)
-    plt.title("Bar Chart")
+    plt.title('Weekly Bar Chart')
     plt.theme('dark')
     plt.yticks([1000 * i for i in range(yticks_range)])
     plt.show()  
@@ -404,7 +400,7 @@ def print_monthly_chart(labels, data_tuple):
     data_lists = data_tuple[1]
 
     temp_list = []
-    # Re-format to 'datetime'
+    # Re-format to "datetime"
     for date in dates_list:
         datetime_format = datetime.strptime(date, '%d/%m/%Y')
         # Get month name + year
@@ -448,7 +444,7 @@ def print_monthly_chart(labels, data_tuple):
     
     # Plotext terminal plots
     plt.multiple_bar(month_year_list, totals_data_lists, label = labels)
-    plt.title('Bar Chart')
+    plt.title('Monthly Bar Chart')
     plt.theme('dark')
     plt.yticks([1000 * i for i in range(yticks_range)])
     plt.show()  
@@ -473,6 +469,8 @@ def print_bar_chart(labels, data_tuple):
     # Everything else; present monthly chart
     else:
         print_monthly_chart(labels, data_tuple)
+
+    main()
     
     
 def main():
