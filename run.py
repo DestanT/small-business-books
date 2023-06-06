@@ -3,6 +3,7 @@ from google.oauth2.service_account import Credentials
 from datetime import datetime
 import plotext as plt
 import math
+import os
 
 # Code taken from Code Institute's "Love Sandwiches" project
 SCOPE = [
@@ -23,6 +24,9 @@ def record_data(worksheet, year):
     Get the date and data from the user,
     returns data given as a list.
     """
+    # Clears the terminal
+    os.system('clear')
+
     headings_string = ''
     headings_list = SHEET.worksheet(f'{worksheet}_{year}').row_values(1)
 
@@ -83,6 +87,9 @@ def update_worksheet(worksheet, data):
     Receives a data list, finds the date associated with data,
     and updates specified worksheet.
     """
+    # Clears the terminal
+    os.system('clear')
+
     date = data[0]
     date_list = date.split('/')
     year = date_list[2]
@@ -138,6 +145,9 @@ def input_time_period():
     and checks if end date is later than start date.
     Returns [start_date, end_date] list.
     """
+    # Clears the terminal
+    os.system('clear')
+
     while True:
         print('Input the desired START date (DD/MM/YYYY):\n')
         start_date = input()
@@ -174,6 +184,9 @@ def get_data_dict(worksheet, dates):
     compiles a data_dict for all data within dates.
     Returns time_period_data as a list of dicts.
     """
+    # Clears the terminal
+    os.system('clear')
+
     # Start date
     start_date = dates[0]
     temp_list = start_date.split('/')
@@ -255,6 +268,9 @@ def input_key_values(list_of_dicts):
     asks the user to input choices from those keys only.
     Returns list of labels.
     """
+    # Clears the terminal
+    os.system('clear')
+
     # Get list of keys
     keys = [key for key in list_of_dicts[0]]
 
@@ -305,6 +321,9 @@ def concatenate_data(labels, data_dict):
     Also makes a list of all dates from the data_dict.
     Returns tuple of (dates as [] and data as [[x], [y], [z], ...])
     """
+    # Clears the terminal
+    os.system('clear')
+
     print('Sorting data according to parameters chosen...')
 
     # Puts dates in a list
@@ -456,6 +475,9 @@ def print_bar_chart(labels, data_tuple):
     chooses to present plotext bar chart in;
     daily, weekly or monthly format.
     """
+    # Clears the terminal
+    os.system('clear')
+
     dates_list = data_tuple[0]
 
     # Under 2 weeks; present daily chart
@@ -487,6 +509,7 @@ def main():
         choice = input()
 
         if choice == '1':
+            os.system('clear')
             print('Select from one of the following years:')
             print('2021, 2022, 2023')
 
@@ -497,6 +520,9 @@ def main():
                     income_data = record_data('income', year)
                     update_worksheet('income', income_data)
                     calculate_totals('income', income_data)
+
+                    # Clears the terminal
+                    os.system('clear')
                     break
                 
                 else:
@@ -515,6 +541,9 @@ def main():
                     expense_data = record_data('expense', year)
                     update_worksheet('expense', expense_data)
                     calculate_totals('expense', expense_data)
+
+                    # Clears the terminal
+                    os.system('clear')
                     break
                 
                 else:
