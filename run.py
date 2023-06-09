@@ -515,15 +515,15 @@ def print_bar_chart(labels, data_tuple):
 
     # Under 2 weeks; present daily chart
     if len(dates_list) <= 14:
-        print_daily_chart(labels, data_tuple)
+        new_data = print_daily_chart(labels, data_tuple)
 
     # Under 14 weeks; present weekly chart
     elif len(dates_list) <= 98:
-        print_weekly_chart(labels, data_tuple)
+        new_data = print_weekly_chart(labels, data_tuple)
 
     # Everything else; present monthly chart
     else:
-        print_monthly_chart(labels, data_tuple)
+        new_data = print_monthly_chart(labels, data_tuple)
 
     while True:
         print('Please choose to (E)xport data or go back to the (M)enu')
@@ -531,6 +531,7 @@ def print_bar_chart(labels, data_tuple):
         choice = input()
 
         if choice.lower() == 'e':
+            export_data(labels, new_data)
         
         elif choice.lower() == 'm':
             os.system('clear')
