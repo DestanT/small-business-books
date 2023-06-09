@@ -306,6 +306,9 @@ def input_key_values(list_of_dicts):
                 # Re-capitalize and append to list
                 labels_list.append(input_list[x].capitalize())
         except ValueError as e:
+            # Clears the terminal
+            os.system('clear')
+            
             print(f'{e}, please try again...\n')
             continue
         
