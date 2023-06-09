@@ -40,151 +40,68 @@ Using Google Sheets as a database and leveraging the power of Python, the user c
 You can view the application on Heroku by clicking [**here**](https://small-business-books.herokuapp.com/).
 
 ## Goals
-As a user of the site, I would:
-* Enjoy spending a few minutes every so often to play blackjack
-* Return to the site to beat my high score
-* Share the site with friends so that I could compete with them
-* Screenshot the end screen with my top 3 high scores on it to show off to my friends and colleagues
+As a small business, I would use this application to:
+* Input income data
+* Input expense data
+* Have all of my business' income and expense data in one place (Google Sheets, in this case)
+* View all income and expense data to be able to compare how the business is doing every month/year
+* View and compare employees' incomes to the business and set up progress reports to see how things could be improved
+* View when the quietest times are for the business and make offers/changes according to those quiet periods
+* See an overall trend in various aspects of income and expenses of the business to better plan for the future
 
-As the owner of the site, I would:
-* Listen to feedback from my users and add updates to include new features accordingly
-* Fix bugs, as they are reported to me
+As the owner of the application, I would:
+* Apply new parameters/functions over time, by listening to the needs of the business
+* Make sure the application remains bug free by listening to any problems that may have occured by the users of the application
 
 ## Wireframe & Planning
-The wireframe:
-  * The choice behind the design was to mimic a casino blackjack table and have everything in view for the player.\
-![Wireframe](/documentation/wireframe-pp2.png)
-
-The colours:
-  * I wanted to include the typical green seen in all casinos, so opted to use that as the background. However, I did not want to overpower the viewing field either and so chose to also include a much lighter shade in the foreground.\
-![Colours Used](/documentation/colour-choice.png)
-
-The typography:
-  * The typography was chosen for its simplicity and elegance.\
-![Typography](/documentation/typography.png)
 
 ## Features:
-### First Visit
-![Input Name Pop-Up](/documentation/input-name-screen.png)
-* On the first visit, the player is greeted with this pop-up modal window.
-  * The player must input their name (minimum 2 characters, maximum 15).
-  * The name is stored in localStorage.
-  * The 'Game Rules' will display the player's name.\
-  ![Greeting Player](/documentation/hi-player-name.png)
-* On subsequent visits (i.e. if localStorage already has name data), the game will welcome the player back.\
-![Welcome Back Player](/documentation/welcome-back-player-name.png)
-* If the player wishes to change their name; they can click on their name in the 'Game Rules' section.
+### Main Menu
+When the application is launched the user is greeted with the main menu.
+* The application checks for a valid input by the user to move forward, else throws an error and asks the user to try again
 
-### The Deck Of Cards
-The deck of cards is displayed on the side of the screen.
-* It has a 'remaining' cards counter
-* When the deck is below 15, it will reshuffle into a new deck
-* It isn't explicitly stated, but the choice behind having a remaining card counter and only using one deck of cards was primarily because I wanted to give observant players an edge when it comes to card counting.\
-![Draw Deck](/documentation/draw-deck.png)
+### 1. Record Income
+Records income data from the user's CSV input to Google Sheets via the API. The features within are:
+* Checks to see what headings there are in row 1 of the excel sheet, instead of just printing pre-chosen headings. This was implemented with the future possibility of staff/parameter changes in mind. The function will work with any number of changes to this row.
+* Validates the date to be in the right format (DD/MM/YYYY)
+* Validates the right number of data points given and throws an error otherwise.
+* Dynamic headings
+* therefore dynamically
+* Calculates total income and automatically updates google sheets
 
-### The 'Hit', 'Split' and 'Stand' Functions
+### 2. Record Expense
+Records expense data from the user's CSV input to Google Sheets via the API. The features within are identical to the fetaures in "Record Income" as the functions used are identical (Difference in arguments within parameters only)
 
-#### __Hit__
-![Hit Function](/documentation/function-hit.png)
-![Player Sum](/documentation/player-sum.png)
-* As long as the player has a sum below 21 the 'Hit' function allows the player to draw another card.
-* Aces are automatically considered at their higher value of 11.
-  * When the player exceeds 21 and holds an ace(s), one ace at a time is automatically recalculated to be worth 1 instead until a score of 21 or below is reached.
-* If the player exceeds 21; the round is automatically lost and the 'aww' sound effect is played.
-  * The 'Deal' button is revealed to deal out the new round.\
-![Deal Button](/documentation/deal-button.png)
+### 3. View Charts
+The user is presented with a bar chart that makes viewing the data much more pleasant and easier to understand and get an overview over. The application achieves this by asking a series of questions to its user:
 
-![Blackjack, 21](/documentation/perfect-score.png)
-![Player Sum 21](/documentation/player-sum-21.png)
-* When the player has 21 points exactly, the 'Hit' button will grey out and stop functioning.
-  * This is to stop accidental clicks when the player has the best score.
-
-#### __Split__
-![Split Function](/documentation/function-split.png)
-* If two identical cards are dealt at the beginning of a round, the 'Split' button will appear.
-  * Players can decide to split or continue playing as normal.
-
-![Split Function Pressed](/documentation/after-split.png)
-* If the player decides to split, the left card is put aside (as seen in the image - bordered in red).
-  * A side bet, matching the original bet, is created (as seen in the image - blue border).
-    * Split bets can only be initiated if the player has enough cash to match the original bet.
-  * The 'Player Sum' is updated (green border).
-* Once the first card is played, the second card is put into play.
-
-#### __Stand__
-* Once the player is happy with their score, they can choose to 'Stand'
-  * This initiates the dealer's turn:
-    * The dealer will automatically draw cards until their obligation to score at least 17 is met.
-  * Once the dealer has had their turn:
-    * If the dealer is busted (score above 21); the player wins and cashes out double their bet.
-    * Likewise; if the player has a higher score than the dealer.
-      * The winning 'ding' sound is played.
-      * The 'You Won!' text pops up for 1.5s below the 'Player Sum'.\
-      ![Win Text](/documentation/win-text.png)
-    * If the dealer exceeds the player's score; the player loses and loses their bet.
-      * The 'aww' sound effect is played.
-      * The 'You Lose.' text pops up for 1.5s below the 'Player Sum'.\
-      ![Lose Text](/documentation/lose-text.png)
-    * In case of a draw; nobody wins, the player retains their bet.
-      * The 'Draw!' text pops up for 1.5s below the 'Player Sum'.\
-      ![Draw Text](/documentation/draw-text.png)
-
-### The Poker Chips and Betting
-![The Poker Chips](/documentation/poker-chips.png)
-* The player can click on the poker chips to add to or remove from their bet\
-![Total Bet Value](/documentation/total-bet.png)
-* Players can only remove a bet in multiples of $100 (as seen in the image; the white poker chip)
-  * It is still possible to remove bets below $100. The game checks for this and adjusts accordingly.
-* Cash value and bet value are adjusted with every click.
-* Animations of chips moving to and from the bet value and hand are played.
-* Poker chips will grey out when the player is not allowed to interact with them. And toggle back on when the player can again interact with them.\
-![Greyed Out Poker Chips](/documentation/grey-poker-chips.png)
-
-### End Game Score Screen
-![Score Screen](/documentation/score-screen.png)
-* Once the 3-minute timer runs out at the top of the screen the game will stop and the player will be greeted with the 'Score Screen'
-  * The player's cash value, bet value, and (if they have) their side bet value will be tallied up.
-  * The total will be stored on localStorage and compared. The top 3 scores will be shown on the scoreboard.
-  * If the player has beaten their past high score they will be greeted with a 'Well Done' and an update of their scoreboard\
-  ![Beating The Highscore](/documentation/well-done-score-screen.png)
-  * If the player failed to beat any of their high scores, they will be greeted with a 'Better luck next time!':\
-  ![Better Luck Next Time](/documentation/next-time-score-screen.png)
-  * If the player runs out of money before the timer is finished, they will be greeted with this screen instead:\
-  ![No Money Score Screen](/documentation/no-money-score-screen.png)
-* If the player has had enough before the timer ends or simply wishes to record their high score without risking further losses, then the 'End Game' button can be pressed next to the timer at the top of the screen:\
-![End Game Button](/documentation/end-game-button.png)
-
-### Animations
-The animations were done using elements of all three; HTML, CSS, and JavaScript. There are currently animations for:
-* Poker chips being placed as bets, in their own colours.
-* Poker chips being deducted from the current bet (Two $50 chips can be seen being withdrawn).
-* Single cards being dealt to each; the dealer and the player.
- 
-Example Animations:
-  * Cards being dealt:\
-![Card Animations](/documentation/card-animations.png)
-  * Poker chips being withdrawn from the bet:\
-![Poker Chip Animations](/documentation/chip-animations.png)
-
-### Sound Effects
-There are currently 10 different sound effects in the game, these are:
- * For dealing a single card.
- * When the dealer flips their facedown card to face up.
- * A 'ding' for when the player wins a hand.
- * An 'aww' for when the player loses a hand.
- * Deck shuffle.
- * Two distinctive sounds for when placing a bet..
- * ..and when deducting from a bet.
- * Glass smashing - when the player 'busts' their hand (exceeds 21).
- * A 'boing' sound for when the player does something they shouldn't.
- * And finally the sound of poker chips being pushed around for when the player collects their winnings.
+* The user is promted to enter a start date and an end date, the application:
+	* checks that the format of the date is correct (DD/MM/YYYY)
+	* checks that the date is valid, ie 31st February, for example would not be valid
+	* checks that the end date is at least one day after the start date
+* The user is promted to enter the names of the parameters they wish to view in the bar chart, the application (for example the names of their staff members):
+	* checks whether or not those names/parameters are present in the excel sheets, prompts the user to re-enter if non existent parameters are entered
+	* is not case sensitive, for better UX
+* The application concatenates the data based on the parameters selected, so for example if only "Retail" sales and "Total" income is of interest, then only those two can be selected:
+	* Also the order in which they are selected is the order in which they will be displayed - this allows the user a little more flexibility with how their data is presented to them.
+* The application will:
+	* Display a daily chart if data is up to 14 days long
+		* displays every date in the x axis
+	* Display a weekly chart if data is up to 14 weeks long
+		* displays every 7th date in the x axis
+		* calculations are done for every 7 days
+	* And display a monthly chart is data is any longer than 14 weeks
+		* displays every month-year in the x axis
+		* calculations are done according to the month the data falls within
+	* This was to ensure readability in the charts, although the conditions can be looked at again in the future
+	
 
 ## Future Features/Roadmap
 
-* Implementation of some casino blackjack staple features:
-  * 'Double Down' bets
-  * 'Insurance' bets
-* A server and a database for global leaderboards
+* Function to add and remove staff members from Google Sheets
+* Split expenses up into their proper groups instead of having all bills under just "bills" for example
+* Having an option to view line graphs and scatter diagrams
+*
 
 ## Testing
 ### __Lighthouse Tests__
@@ -216,8 +133,7 @@ The project was also tested by friends and family; using their native web browse
 
 ### __Process__
 
-The game was played for a total of 10+ hours across the board and these were the primary testing criteria used:
-
+The application was tested 
 | Test | Expected Outcome(s) | Outcome |
 | :--- | :--- | :---: |
 | First Visit | Triggers 'Name Input' screen. | &#9745;

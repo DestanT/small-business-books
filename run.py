@@ -308,7 +308,7 @@ def input_key_values(list_of_dicts):
         except ValueError as e:
             # Clears the terminal
             os.system('clear')
-            
+
             print(f'{e}, please try again...\n')
             continue
         
@@ -370,7 +370,7 @@ def print_daily_chart(labels, data_tuple):
     plt.yticks([200 * i for i in range(yticks_range)])
     plt.show()
 
-    return dates_list, data_lists
+    return labels, dates_list, data_lists
 
 
 def print_weekly_chart(labels, data_tuple):
@@ -415,7 +415,7 @@ def print_weekly_chart(labels, data_tuple):
     plt.yticks([1000 * i for i in range(yticks_range)])
     plt.show()  
 
-    return week_start_date, totals_data_lists
+    return labels, week_start_date, totals_data_lists
 
 
 def print_monthly_chart(labels, data_tuple):
@@ -475,7 +475,7 @@ def print_monthly_chart(labels, data_tuple):
     plt.yticks([1000 * i for i in range(yticks_range)])
     plt.show()
 
-    return month_year_list, totals_data_lists
+    return labels, month_year_list, totals_data_lists
     
 
 def export_data(labels, data_tuple):
@@ -494,12 +494,9 @@ def export_data(labels, data_tuple):
     worksheet_to_update = SHEET.worksheet('exported_data')
 
     first_available_row = len(worksheet_to_update.get_all_values()) + 1
-    print(first_available_row)
+    
     row_count = worksheet_to_update.row_count
-    print(row_count)
-    print(labels)
-    print(dates_list)
-    print(data_lists)
+    
 
 
 
