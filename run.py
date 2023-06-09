@@ -492,7 +492,20 @@ def print_bar_chart(labels, data_tuple):
     else:
         print_monthly_chart(labels, data_tuple)
 
-    main()
+    while True:
+        print('Please choose to (E)xport data or go back to the (M)enu')
+
+        choice = input()
+
+        if choice.lower() == 'e':
+            pass
+        
+        elif choice.lower() == 'm':
+            os.system('clear')
+            main()
+        
+        else:
+            print('Please choose a valid option...')
     
     
 def main():
