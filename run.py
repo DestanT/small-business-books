@@ -367,6 +367,8 @@ def print_daily_chart(labels, data_tuple):
     plt.yticks([200 * i for i in range(yticks_range)])
     plt.show()
 
+    return dates_list, data_lists
+
 
 def print_weekly_chart(labels, data_tuple):
     """
@@ -409,6 +411,8 @@ def print_weekly_chart(labels, data_tuple):
     plt.theme('dark')
     plt.yticks([1000 * i for i in range(yticks_range)])
     plt.show()  
+
+    return week_start_date, totals_data_lists
 
 
 def print_monthly_chart(labels, data_tuple):
@@ -466,8 +470,37 @@ def print_monthly_chart(labels, data_tuple):
     plt.title('Monthly Bar Chart')
     plt.theme('dark')
     plt.yticks([1000 * i for i in range(yticks_range)])
-    plt.show()  
+    plt.show()
+
+    return month_year_list, totals_data_lists
     
+
+def export_data(labels, data_tuple):
+    """
+    Exports data to a separate sheet in Google Sheets
+    """
+    # Clears the terminal
+    os.system('clear')
+
+    print('Exporting data...')
+
+    print(data_tuple)
+    dates_list = data_tuple[0]
+    data_lists = data_tuple[1]
+
+    worksheet_to_update = SHEET.worksheet('exported_data')
+
+    first_available_row = len(worksheet_to_update.get_all_values()) + 1
+    print(first_available_row)
+    row_count = worksheet_to_update.row_count
+    print(row_count)
+    print(labels)
+    print(dates_list)
+    print(data_lists)
+
+
+
+
 
 def print_bar_chart(labels, data_tuple):
     """
@@ -498,7 +531,6 @@ def print_bar_chart(labels, data_tuple):
         choice = input()
 
         if choice.lower() == 'e':
-            pass
         
         elif choice.lower() == 'm':
             os.system('clear')
@@ -569,6 +601,8 @@ def main():
             time_period_data = get_data_dict('income', time_period)
             key_values = input_key_values(time_period_data)
             data_tuple = concatenate_data(key_values, time_period_data)
+            # print(key_values)
+            # print(data_tuple)
             print_bar_chart(key_values, data_tuple)
             break
 
@@ -577,3 +611,4 @@ def main():
 
 
 main()
+# export_data(['John', 'Carol', 'Retail'], (['01/01/2023', '02/01/2023', '03/01/2023', '04/01/2023', '05/01/2023', '06/01/2023', '07/01/2023', '08/01/2023', '09/01/2023', '10/01/2023'], [[500, 1492, 1317, 1597, 1398, 1526, 1427, 1351, 1622, 1388], [500, 1240, 1072, 1390, 956, 982, 1488, 1000, 1111, 1387], [500, 220, 227, 184, 98, 178, 87, 257, 131, 198]]))
