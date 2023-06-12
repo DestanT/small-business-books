@@ -3,98 +3,88 @@
 ## Table of Contents
 1. [Introduction](#introduction)
 2. [Goals](#goals)
-3. [Wireframe & Planning](#wireframe--planning)
+3. [Flow of Logic](#flow-of-logic)
 4. [Features:](#features)
-    1. [First Visit](#first-visit)
-    2. [The Deck Of Cards](#the-deck-of-cards)
-    3. [The 'Hit', 'Split' and 'Stand' Functions](#the-hit-split-and-stand-functions)
-        - [Hit](#hit)
-        - [Split](#split)
-        - [Stand](#stand)
-    4. [The Poker Chips and Betting](#the-poker-chips-and-betting)
-    5. [End Game Score Screen](#end-game-score-screen)
-    6. [Animations](#animations)
-    7. [Sound Effects](#sound-effects)
+    1. [The Main Menu](#the-main-menu)
+    2. [Record Income (Option 1)](#record-income-(option-1))
+    3. [Record Expense (Option 2)](#record-expense-(option-2))
+    4. [View Charts (Option 3)](#view-charts-(option-3))
+    5. [The Export Function](#the-export-function)
 5. [Future Features/Roadmap](#future-featuresroadmap)
 6. [Testing](#testing)
     1. [Lighthouse Tests](#lighthouse-tests)
     2. [Validator Testing](#validator-testing)
-    3. [Friends and Family Testing](#friends-and-family-testing)
-    4. [Process](#process)
+    3. [Process](#process)
 7. [Challenges & Bugs](#challenges--bugs)
     1. [Challenges](#challenges)
     2. [Fixed Bugs](#fixed-bugs)
     3. [Unfixed Bugs](#unfixed-bugs)
 8. [Technologies Used](#technologies-used)
 9. [Deployment](#deployment)
-10. [Development](#development)
-11. [Credits](#credits)
+10. [Creating the Heroku app](#creating-the-heroku-app)
+11. [Development](#development)
+12. [Credits](#credits)
     1. [Content](#content)
-    2. [Media](#media)
 
 ## Introduction
 Small Business Books is a Python-based command-line application designed to assist small businesses in managing their financial data. The application allows users to input income and expense data, which is then updated in a Google Sheets spreadsheet via the Google Sheets API.
 
 Using Google Sheets as a database and leveraging the power of Python, the user can input a date range to visualise their incomes and expenses, allowing them to easily track and monitor their financial performance over time.
 
-You can view the application on Heroku by clicking [**here**](https://small-business-books.herokuapp.com/).
+To access the application, visit the Heroku app [**here**](https://small-business-books.herokuapp.com/). You can also view the worksheet on Google Sheets by clicking [**here**](https://docs.google.com/spreadsheets/d/1GSfZcFmG2D2p7pMAxzfF4QCuH93I7T6DGtliOl3ZAEU/edit?usp=sharing).
 
 ## Goals
-As a small business, I would use this application to:
-* Input income data
-* Input expense data
-* Have all of my business' income and expense data in one place (Google Sheets, in this case)
-* View all income and expense data to be able to compare how the business is doing every month/year
-* View and compare employees' incomes to the business and set up progress reports to see how things could be improved
-* View when the quietest times are for the business and make offers/changes according to those quiet periods
-* See an overall trend in various aspects of income and expenses of the business to better plan for the future
+As a small business owner, the Small Business Books application helps me achieve the following goals:
+* Input income data.
+* Input expense data.
+* Consolidate all income and expense data in one place (Google Sheets).
+* View and compare monthly/yearly business performance based on income and expenses.
+* Monitor employees' incomes and generate progress reports.
+* Identify quiet periods and make necessary adjusments or offers accordingly.
+* Identify overall trends in various aspects of the business's income and expenses to better plan for the future.
 
-As the owner of the application, I would:
-* Apply new parameters/functions over time, by listening to the needs of the business
-* Make sure the application remains bug free by listening to any problems that may have occured by the users of the application
+As the owner of the application, I am committed to:
+* Adding new parameters/functions over time based on user needs.
+* Ensuring the application remains bug-free by addressing user-reported issues promptly.
 
-## Wireframe & Planning
+## Flow of Logic
+![Flowchart](/documentation/small-business-books-flowchart.png)
 
 ## Features:
-### Main Menu
-When the application is launched the user is greeted with the main menu.
-* The application checks for a valid input by the user to move forward, else throws an error and asks the user to try again
+### The Main Menu
+Upon launching the application, the user is presented with the main menu. The application performs the following tasks:
+* Validates user input and prompts for correct input if necessary.
+* Provides options for different functionalities based on user selection.
 
-### 1. Record Income
-Records income data from the user's CSV input to Google Sheets via the API. The features within are:
-* Checks to see what headings there are in row 1 of the excel sheet, instead of just printing pre-chosen headings. This was implemented with the future possibility of staff/parameter changes in mind. The function will work with any number of changes to this row.
-* Validates the date to be in the right format (DD/MM/YYYY)
-* Validates the right number of data points given and throws an error otherwise.
-* Dynamic headings
-* therefore dynamically
-* Calculates total income and automatically updates google sheets
+### Record Income (Option 1)
+The Records Income feature allows users to input income data in CSV format into Google Sheets using the Google Sheets API. The features includes the following functionalities:
+* Dynamically detects the headings in the first row of the spreadsheet to accommodate potential changes.
+* Validates the date format (DD/MM/YYYY).
+* Validates the number of data points provided and displays an error if incorrect.
+* Calculates the total income and updates the Google Sheets accordingly.
 
-### 2. Record Expense
-Records expense data from the user's CSV input to Google Sheets via the API. The features within are identical to the fetaures in "Record Income" as the functions used are identical (Difference in arguments within parameters only)
+### Record Expense (Option 2)
+Similar to the Record Income feature, the Record Expense feature enables users to input expense data in CSV format into Google Sheets using the Google Sheets API. The functionalities are identical.
 
-### 3. View Charts
-The user is presented with a bar chart that makes viewing the data much more pleasant and easier to understand and get an overview over. The application achieves this by asking a series of questions to its user:
+### View Charts (Option 3)
+The View Charts feature allows users to visualise their data using bar charts in the terminal. The application prompts users for the following information:
+* Start and end dates for the data range:
+  * Validates the date format (DD/MM/YYYY)
+  * Checks for valid dates, ensuring the end date is after the start date.
+* Parameters to be displayed in the bar chart (for example, staff members' names):
+  * Verifies the existence of the entered parameters in the spreadsheet and prompts for correction if necessary.
+  * Allows users to choose the order in which to display data, by entering parameters in any order.
+  * Performs case-ins.
+* Bar charts will display as follows:
+  * Daily: for data range between 14 days.
+  * Weekly: for data range between 14 weeks.
+  * Monthly: for data range over 14 weeks.
+  * All "Totals" calculations are done accordingly.
 
-* The user is promted to enter a start date and an end date, the application:
-	* checks that the format of the date is correct (DD/MM/YYYY)
-	* checks that the date is valid, ie 31st February, for example would not be valid
-	* checks that the end date is at least one day after the start date
-* The user is promted to enter the names of the parameters they wish to view in the bar chart, the application (for example the names of their staff members):
-	* checks whether or not those names/parameters are present in the excel sheets, prompts the user to re-enter if non existent parameters are entered
-	* is not case sensitive, for better UX
-* The application concatenates the data based on the parameters selected, so for example if only "Retail" sales and "Total" income is of interest, then only those two can be selected:
-	* Also the order in which they are selected is the order in which they will be displayed - this allows the user a little more flexibility with how their data is presented to them.
-* The application will:
-	* Display a daily chart if data is up to 14 days long
-		* displays every date in the x axis
-	* Display a weekly chart if data is up to 14 weeks long
-		* displays every 7th date in the x axis
-		* calculations are done for every 7 days
-	* And display a monthly chart is data is any longer than 14 weeks
-		* displays every month-year in the x axis
-		* calculations are done according to the month the data falls within
-	* This was to ensure readability in the charts, although the conditions can be looked at again in the future
-	
+### The Export Function
+Once the user is presented with the chart of their chosen time period and parameters, the user has the choice to export this data to a separate Sheet within the same Spreadsheet in Google Sheets. Every export:
+	* uses the datetime library to add the current date and time to the Sheet
+	* finds the first available row within the sheet and appends the data to the new row onwards
 
 ## Future Features/Roadmap
 
@@ -119,123 +109,74 @@ The user is presented with a bar chart that makes viewing the data much more ple
   * Metrics:\
   ![JSHint Metrics](/documentation/jshint-metrics.png)
 
-### __Friends and Family Testing__
-
-The project was also tested by friends and family; using their native web browsers for responsiveness using these devices/tools:
-  * Monitor 25" screen
-  * Windows laptop 15" screen
-  * iPhone 12 Pro Max
-  * OnePlus 8
-  * Samsung S22 Ultra
-  * iPad Pro 12.9" screen
-  * iPad Pro 11" screen
-  * Chrome dev tools for various other options
 
 ### __Process__
 
-The application was tested 
+__The Main Menu__
 | Test | Expected Outcome(s) | Outcome |
 | :--- | :--- | :---: |
-| First Visit | Triggers 'Name Input' screen. | &#9745;
-|||
- Clicking the name in 'Game Rules' | Triggers 'Name Input' screen. | &#9745;
-|||
-| `Start` button | Plays card animations, | &#9745;
-||deals 2 cards each to dealer and player, | &#9745;
-||minimum bet of $50 is applied automatically, | &#9745;
-||cash value is updated, | &#9745;
-||poker chips are grayed out, | &#9745;
-||starts the countdown timer, | &#9745;
-||updates dealer/player sums and remaining cards, | &#9745;
-||Hit, Split*, Stand buttons become visible. | &#9745;
-|||
-| `Hit` button | Plays card animation, | &#9745;
-||deals 1 card to the player, | &#9745;
-||updates player sum and remaining cards. | &#9745;
-|||
-| `Stand` button | Plays card animation, | &#9745;
-||the dealer draws until at least 17 points are reached, | &#9745;
-||updates dealer sum and remaining cards, | &#9745;
-||win/loss conditions are unlocked. | &#9745;
-|||
-| `Split`* button | Only appears when 2 same-value cards are drawn at the start of a round, | &#9745;
-||sets aside one of those cards*, | &#9745;
-||*(only if player has enough cash to match initial bet value), | &#9745;
-||copies current bet value and updates 'Side Bet: $XX', | &#9745;
-||updates player cash value accordingly, | &#9745;
-||before starting a brand new round, puts the split card into play. | &#9745;
-|||
-| `Poker Chips` | Play sound effects for a poker chip, | &#9745;
-||add/subtract correct amounts. | &#9745;
-|||
-| Win/Loss Conditions: ||
-|||
-| The player going over 21 | 'aww' sound effect played, | &#9745;
-||'You Lose' is displayed in red below the player sum, | &#9745;
-||the player loses the current bet value, | &#9745;
-||table clears cards away, | &#9745;
-||dealer *doesn't* unnecessarily take its turn, | &#9745;
-||The 'Deal' Button becomes visible, | &#9745;
-||poker chips become usable again, | &#9745;
-||previous bet value is automatically played, | &#9745;
-||and player cash value is updated. | &#9745;
-|||
-| Player sum > dealer sum | 'ding' and 'poker chip winnings' sound effects played, | &#9745;
-| -OR- | 'You Won!' is displayed in green below the player sum, | &#9745;
-| dealer goes bust (above 21)| player doubles their bet, | &#9745;
-||table clears cards away, | &#9745;
-||The 'Deal' Button becomes visible, | &#9745;
-||poker chips become usable again, | &#9745;
-||previous bet value is automatically played, | &#9745;
-||and player cash value is updated. | &#9745;
-|||
-| The timer runs out | Game is stopped, | &#9745;
-||score screen pops up, | &#9745;
-||correct score calculations (bet value + (side bet value)** + cash value) | &#9745;
-||correct .innerHTML depending on which condition was met | &#9745;
-||correctly displaying the top 3 scores. | &#9745;
-|||
-| The score screen `Close` button | Closes the score screen and allows the player to play a new round. | &#9745;
-|||
+| Clicking “Run Program” | Application starts and the main menu is displayed | &#9745; |
+| Entering an incorrect input (a string) | Throws an error and prompts user to re-try | &#9745; |
+| Entering an incorrect input (integers) | Throws an error and prompts user to re-try | &#9745; |
+| Entering an incorrect input (a “space”) | Throws an error and prompts user to re-try | &#9745; |
+| Entering “1” | Starts the “Record Income” function | &#9745; |
+| Entering “2” | Starts the “Record Expense” function | &#9745; |
+| Entering “3” | Starts the “View Charts” function | &#9745; |
 
-*Split button only available if *initial* two cards are identical.\
-**If currently active.
+__The Record Income Function__
+| Test | Expected Outcome(s) | Outcome |
+| :--- | :--- | :---: |
+| Inputting a year not in the list | Throws an error and prompts user to re-try | &#9745; |
+| Inputting a valid year | Application continues to next question | &#9745; |
+| Entering an incorrect input (integers) | Throws an error and prompts user to re-try | &#9745; |
+| Entering an incorrect input (a “space”) | Throws an error and prompts user to re-try | &#9745; |
+| Entering “1” | Starts the “Record Income” function | &#9745; |
+| Entering “2” | Starts the “Record Expense” function | &#9745; |
+| Entering “3” | Starts the “View Charts” function | &#9745; |
+
+__The Record Expense Function__
+| Test | Expected Outcome(s) | Outcome |
+| :--- | :--- | :---: |
+| Clicking “Run Program” | Application starts and the main menu is displayed | &#9745; |
+| Entering an incorrect input (a string) | Throws an error and prompts user to re-try | &#9745; |
+| Entering an incorrect input (integers) | Throws an error and prompts user to re-try | &#9745; |
+| Entering an incorrect input (a “space”) | Throws an error and prompts user to re-try | &#9745; |
+| Entering “1” | Starts the “Record Income” function | &#9745; |
+| Entering “2” | Starts the “Record Expense” function | &#9745; |
+| Entering “3” | Starts the “View Charts” function | &#9745; |
+
+__The View Charts Function__
+| Test | Expected Outcome(s) | Outcome |
+| :--- | :--- | :---: |
+| Clicking “Run Program” | Application starts and the main menu is displayed | &#9745; |
+| Entering an incorrect input (a string) | Throws an error and prompts user to re-try | &#9745; |
+| Entering an incorrect input (integers) | Throws an error and prompts user to re-try | &#9745; |
+| Entering an incorrect input (a “space”) | Throws an error and prompts user to re-try | &#9745; |
+| Entering “1” | Starts the “Record Income” function | &#9745; |
+| Entering “2” | Starts the “Record Expense” function | &#9745; |
+| Entering “3” | Starts the “View Charts” function | &#9745; |
 
 ## __Challenges & Bugs__
 
 ### __Challenges__
 
-The biggest challenge of this project was realising that a global leaderboard was not as simple as 'simply uploading data to the internet'. I learned a global leaderboard would require a server and a database of some sort (in this case a simple text/JSON file would have sufficed).
+Some of the more challenging parts of this project were working with the plotext library; in particular the fact that when plotext had too much data to display, it wouldn’t display it in the pretty fashion that would be expected for a user to find it useful.
 
-I even went as far as purchasing a Raspberry Pi to serve this purpose and did a substantial amount of research on how to 'build' a server. After everything, the part at which I felt I needed to let go of this ambition (for now!), is when I realised that GitHub pages would only communicate with a server over HTTPS. My server would have only been on HTTP, and that extra layer of complexity, and given the time I had to finish the project meant I had to unfortunately postpone my ambition to create a global leaderboard.
+So it was more useful to clump the data in chunks of 14 points, for daily display; 14 points for a weekly display and everything else to be clumped into a monthly view of the data.
 
-Another notable challenge was W3C validation:
-  * The 'main game area' section in index.html did not have an h1-h6 element in it, which the validator did not like. I was too far into development to make a fundamental change to this, so I simply opted to change it to a div.
+This in turn meant designing the functions to calculate these chunks. Being the first time working with Python, it was challenging to set up the functions to do what was a simple task in mind.
+
+Another struggle was designing the application to stay within Google Sheets API usage limits of "60 requests, per minute, per user, per project". This meant ensuring effieciency when requesting data and making changes to the document.
 
 ### __Fixed Bugs__
-* Buttons correctly display and hide when they need to.
-* Poker chips:
-  * Now correctly function even if the player's hand is busted.
-    * Previously would only function when the player chose to 'stand'.
-  * The white 'deduct $100' poker chip now takes into account if the player has below $100 in bet value.
-* If the timer ran out while in the middle of a hand; game elements would not correctly display/function on reset.
-* Split button:
-  * Now correctly hides if the player chooses to stand.
-    * Previously the player could stand and then click 'Split' anyway - breaking the game.
-  * When the split card comes into play, now correctly calculates win/loss cash values.
-* Bet values are correctly calculated under all circumstances.
-  * Previously bets over a certain amount would cause a bug in calculations.
+
 
 ### __Unfixed Bugs__
-* I have found that on 'Chromium' (Version 1.39.120, 102.0.5005.99 Official Build) the 'Game Rules' section's scroll feature was not functioning as intended, instead, the entire section was on display, and viewing the bottom of the game rules meant users that were affected had to 'scroll away' from the game. Image of proper function below:\
-![Scroll Bug](/documentation/bugs-rules-scroll.png)
+
 
 ## Technologies Used
-* HTML
-* CSS
-* JavaScript
-* Procreate (iPad)
-* Endless Paper (iPad)
+* Python 3.11
+* Heroku
 
 ## Deployment
 The project was deployed on GitHub pages from the 'Main Branch Source Code' using the following steps:
@@ -248,27 +189,9 @@ The project was deployed on GitHub pages from the 'Main Branch Source Code' usin
 
 GitHub may take a few minutes to deploy the website so be patient.
 
-The live link to my project can be found [**here**](https://destant.github.io/blackjack-3-minute-challenge/).
+You can view the application on Heroku by clicking [**here**](https://small-business-books.herokuapp.com/).
 
-## Development
-Should anyone wish to add to the project, please feel free to develop it on a separate branch; then create a pull request and I will review and merge it. Thank you!
-
-Should anyone wish to copy and paste the project - you are also welcome to - please remember to give me some credit!
-
-## Credits 
-
-### __Content__
-* The wireframe was made using the [Endless Paper App](https://endlesspaper.app/) on the iPad.
-* To help me find and visualize the font I used [Fontjoy](https://fontjoy.com/).
-* [W3Schools](https://www.w3schools.com/), [Stack Overflow](https://stackoverflow.com/), and [Mozilla Dev Tools](https://developer.mozilla.org) were referred to a lot for general syntax and whenever I was stuck on a bug for a while - other similar experiences helped me build a better app.
-* [FontAwesome](https://fontawesome.com/) for the "X" mark in the pop-up modal.
-* [Favicon](https://favicon.io/emoji-favicons/game-die/) for the favicons.
-
-### __Media__
-* The poker chip images are from [PngAAA](https://www.pngaaa.com/).
-* The playing cards .png are from [Super Dev Resources](https://superdevresources.com/free-playing-cards-set/).
-* The sound effects are from [Epidemic Sound](https://www.epidemicsound.com/).
-* To compress .PNG [CompressPNG](https://compresspng.com/).
+Click [**here**](https://docs.google.com/spreadsheets/d/1GSfZcFmG2D2p7pMAxzfF4QCuH93I7T6DGtliOl3ZAEU/edit?usp=sharing) to view the worksheet.
 
 ## Creating the Heroku app
 
@@ -283,10 +206,15 @@ If you have credentials, such as in the Love Sandwiches project, you must create
 
 Connect your GitHub repository and deploy as normal.
 
+## Development
+Should anyone wish to add to the project, please feel free to develop it on a separate branch; then create a pull request and I will review and merge it. Thank you!
+
+Should anyone wish to copy and paste the project - you are also welcome to - please remember to give me some credit!
+
+## Credits 
+
+### __Content__
+
 ## Constraints
 
 The deployment terminal is set to 80 columns by 24 rows. That means that each line of text needs to be 80 characters or less otherwise it will be wrapped onto a second line.
-
----
-
-Happy coding!
