@@ -83,8 +83,8 @@ The View Charts feature allows users to visualise their data using bar charts in
 
 ### The Export Function
 Once the user is presented with the chart of their chosen time period and parameters, the user has the choice to export this data to a separate Sheet within the same Spreadsheet in Google Sheets. Every export:
-	* uses the datetime library to add the current date and time to the Sheet
-	* finds the first available row within the sheet and appends the data to the new row onwards
+* uses the datetime library to add the current date and time to the Sheet
+* finds the first available row within the sheet and appends the data to the new row onwards
 
 ## Future Features/Roadmap
 
@@ -169,7 +169,7 @@ This in turn meant designing the functions to calculate these chunks. Being the 
 Another struggle was designing the application to stay within Google Sheets API usage limits of "60 requests, per minute, per user, per project". This meant ensuring effieciency when requesting data and making changes to the document.
 
 ### __Fixed Bugs__
-
+* users could input invalid years...
 
 ### __Unfixed Bugs__
 
@@ -218,3 +218,13 @@ Should anyone wish to copy and paste the project - you are also welcome to - ple
 ## Constraints
 
 The deployment terminal is set to 80 columns by 24 rows. That means that each line of text needs to be 80 characters or less otherwise it will be wrapped onto a second line.
+
+* year selection limited to 2021, 2022, 2023
+
+
+### IMAGES IN FEATURES
+### TABLE OF INSTRUCTUIONS ON HOW TO TEST - change tense
+### TECHNOLOGIES - include libraries + justification ++ lucid charts ++ break down to languages and libraries and tools etc
+development - where to add the creds.json file etc
+think about more user friendly - more concise error messages
+line 171 dont use bare except

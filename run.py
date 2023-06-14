@@ -40,14 +40,15 @@ def record_data(worksheet, year):
         example_print += ',305'
 
     while True:
-        print(f'Enter the date and {worksheet} data, separated by commas.')
+        print(f'Enter the date and {worksheet} data for the year {year}, separated by commas.')
         print('Data should be in the corresponding order:\n')
         print(headings_string)
-        print(f'Example: DD/MM/YYYY{example_print}\n')
+        print(f'Example: DD/MM{example_print}\n')
 
         data_str = input('Enter your data here:\n')
 
         data_list = data_str.split(',')
+        data_list[0] += f'/{year}'
 
         if validate_data(data_list, headings_list[0:-2]):
             print('Data is valid!\n')
@@ -508,7 +509,7 @@ def export_data(data_tuple):
     for x in range(len(labels_list)):
         worksheet_to_update.update_cell(first_available_row, x + 2, labels_list[x])
         for i in range(len(totals_lists)):
-            worksheet_to_update.update_cell(first_available_row, x + 2, totals_lists[x][i])
+            worksheet_to_update.update_cell(first_available_row + 1 + i, x + 2, totals_lists[x][i])
 
 
 
@@ -624,6 +625,6 @@ def main():
         else:
             print('Invalid choice...')
 
-
+record_data('income', '2021')
 # main()
-export_data((['John', 'Carol', 'Retail'], ['01/01/2023', '02/01/2023', '03/01/2023', '04/01/2023', '05/01/2023', '06/01/2023', '07/01/2023', '08/01/2023', '09/01/2023', '10/01/2023'], [[500, 1492, 1317, 1597, 1398, 1526, 1427, 1351, 1622, 1388], [500, 1240, 1072, 1390, 956, 982, 1488, 1000, 1111, 1387], [500, 220, 227, 184, 98, 178, 87, 257, 131, 198]]))
+# export_data((['John', 'Carol', 'Retail'], ['01/01/2023', '02/01/2023', '03/01/2023', '04/01/2023', '05/01/2023', '06/01/2023', '07/01/2023', '08/01/2023', '09/01/2023', '10/01/2023'], [[500, 1492, 1317, 1597, 1398, 1526, 1427, 1351, 1622, 1388], [500, 1240, 1072, 1390, 956, 982, 1488, 1000, 1111, 1387], [500, 220, 227, 184, 98, 178, 87, 257, 131, 198]]))
