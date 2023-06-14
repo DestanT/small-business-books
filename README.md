@@ -228,3 +228,5 @@ The deployment terminal is set to 80 columns by 24 rows. That means that each li
 development - where to add the creds.json file etc
 think about more user friendly - more concise error messages
 line 171 dont use bare except
+expense charts not viewable at the moment
+google sheets right format when exporting
