@@ -160,6 +160,8 @@ __The View Charts Function__
 
 ### __Challenges__
 
+* Google Sheets had to be populates with 0s for empty data as the application ran into issues reading non-integer data.
+
 Some of the more challenging parts of this project were working with the plotext library; in particular the fact that when plotext had too much data to display, it wouldn’t display it in the pretty fashion that would be expected for a user to find it useful.
 
 So it was more useful to clump the data in chunks of 14 points, for daily display; 14 points for a weekly display and everything else to be clumped into a monthly view of the data.
@@ -171,12 +173,23 @@ Another struggle was designing the application to stay within Google Sheets API 
 ### __Fixed Bugs__
 * users could input invalid years...
 
-### __Unfixed Bugs__
+### __"Band-aid" fixes__
+These fixes feel like "band-aids", they were necessary implementations to run the program smoothly, however given more time and or should I come back to this project I would change the code more fundamentally for a more elegant solution:
+* When users try to export large amounts of data, after viewing charts, and due to the Google Sheets API quota limitations, I implemented a sleep timer on the function to allow for a certain amount of time to pass before the exporting of the data is continued. This was the only way to avoid the Google Sheets API giving a "429: Too many requests HTTP status code response" error.
 
+### __Unfixed Bugs__
+To my knowledge no bugs were left unfixed.
 
 ## Technologies Used
-* Python 3.11
-* Heroku
+### Languages
+* Python 3.11.1
+
+### Libraries
+* 
+
+### Tools
+* [**Heroku**](https://www.heroku.com/)
+* [**Lucid Charts**](https://www.lucidchart.com/) 
 
 ## Deployment
 The project was deployed on GitHub pages from the 'Main Branch Source Code' using the following steps:

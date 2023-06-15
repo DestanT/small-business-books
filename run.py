@@ -4,6 +4,7 @@ from datetime import datetime
 import plotext as plt
 import math
 import os
+import time
 
 # Code taken from Code Institute's "Love Sandwiches" project
 SCOPE = [
@@ -501,15 +502,39 @@ def export_data(data_tuple):
     worksheet_to_update.update_cell(first_available_row, 1, todays_date)
     column = 1
 
-
+    # Exporting rest of the data to Google Sheets
     for x in range(len(dates_list)):
         next_available_row = len(worksheet_to_update.get_all_values()) + 1
         worksheet_to_update.update_cell(next_available_row, column, dates_list[x])
 
+    # Time delay, for API quota limitations
+    if len(dates_list) > 30:
+        print('Please wait...')
+        time.sleep(35)
+
     for y in range(len(labels_list)):
         worksheet_to_update.update_cell(first_available_row, y + 2, labels_list[y])
+
         for z in range(len(totals_lists[0])):
             worksheet_to_update.update_cell(first_available_row + 1 + z, y + 2, totals_lists[y][z])
+        
+        # Clears the terminal
+        os.system('clear')
+
+        # Time delay operations, for API quota limitations
+        sleep_time = 15 if len(dates_list) <= 30 else 35
+
+        # sleep_time + 5, to account for writing time on Google Sheets
+        time_left = (sleep_time + 5) * (len(labels_list) - y)
+
+        # Shows wait time, roughly
+        print('Please wait...')
+        print(f'roughly {time_left} seconds left..')
+
+        time.sleep(sleep_time)
+        print('Exporting data...')
+    
+    print('Complete.')
 
 
 def print_bar_chart(labels, data_tuple):
@@ -542,6 +567,7 @@ def print_bar_chart(labels, data_tuple):
 
         if choice.lower() == 'e':
             export_data(new_data)
+            main()
         
         elif choice.lower() == 'm':
             os.system('clear')
@@ -620,4 +646,3 @@ def main():
 
 
 main()
-# export_data((['John', 'Carol', 'Retail'], ['01/01/2023', '02/01/2023', '03/01/2023', '04/01/2023', '05/01/2023', '06/01/2023', '07/01/2023', '08/01/2023', '09/01/2023', '10/01/2023'], [[500, 1492, 1317, 1597, 1398, 1526, 1427, 1351, 1622, 1388], [500, 1240, 1072, 1390, 956, 982, 1488, 1000, 1111, 1387], [500, 220, 227, 184, 98, 178, 87, 257, 131, 198]]))
