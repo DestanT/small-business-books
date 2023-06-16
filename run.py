@@ -586,7 +586,8 @@ def main():
         print('Please select from one of the following options:')
         print('1. Record Income')
         print('2. Record Expense')
-        print('3. View Charts')
+        print('3. View Income Charts')
+        print('4. View Expense Charts')
 
         choice = input()
 
@@ -636,6 +637,14 @@ def main():
         elif choice == '3':
             time_period = input_time_period()
             time_period_data = get_data_dict('income', time_period)
+            key_values = input_key_values(time_period_data)
+            data_tuple = concatenate_data(key_values, time_period_data)
+            print_bar_chart(key_values, data_tuple)
+            break
+        
+        elif choice == '4':
+            time_period = input_time_period()
+            time_period_data = get_data_dict('expense', time_period)
             key_values = input_key_values(time_period_data)
             data_tuple = concatenate_data(key_values, time_period_data)
             print_bar_chart(key_values, data_tuple)
