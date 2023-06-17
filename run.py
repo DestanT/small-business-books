@@ -25,9 +25,6 @@ def record_data(worksheet, year):
     Get the date and data from the user,
     returns data given as a list.
     """
-    # Clears the terminal
-    os.system('clear')
-
     headings_string = ''
     headings_list = SHEET.worksheet(f'{worksheet}_{year}').row_values(1)
 
@@ -41,6 +38,9 @@ def record_data(worksheet, year):
         example_print += ',305'
 
     while True:
+        # Clears the terminal
+        os.system('clear')
+
         print(f'Enter the date and {worksheet} data for the year {year}, separated by commas.')
         print('Data should be in the corresponding order:\n')
         print(headings_string)
@@ -564,6 +564,7 @@ def print_bar_chart(labels, data_tuple):
 
         if choice.lower() == 'e':
             export_data(new_data)
+            os.system('clear')
             main()
         
         elif choice.lower() == 'm':
@@ -606,6 +607,7 @@ def main():
                     break
                 
                 else:
+                    os.system('clear')
                     print('Please enter a valid choice:')
                     print('2021, 2022, 2023')
                     continue
@@ -628,6 +630,7 @@ def main():
                     break
                 
                 else:
+                    os.system('clear')
                     print('Please enter a valid choice:')
                     print('2021, 2022, 2023')
                     continue
