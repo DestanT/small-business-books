@@ -196,7 +196,12 @@ To the best of my knowledge, no unresolved bugs remain in the current version of
 * Python 3.11.1
 
 ### Libraries
-* 
+* **GSpread**: Used to interact with Google Sheets via the Google Sheets API
+* **Datetime**: Primarily used for date format validation and timestamps
+* **Plotext**: Used to visualise data as bar charts
+* **Math**: Used for basic mathematical operations 
+* **OS**: Used for clearing the terminal for a better user experience
+* **Time**: Used to create the delays between Google Sheets API requests
 
 ### Tools
 * [Heroku](https://www.heroku.com/)

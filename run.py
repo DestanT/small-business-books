@@ -651,6 +651,9 @@ def main():
             break
 
         else:
+            # Clears the terminal
+            os.system('clear')
+            
             print('Invalid choice...')
 
 
