@@ -148,9 +148,6 @@ def input_time_period():
     and checks if end date is later than start date.
     Returns [start_date, end_date] list.
     """
-    # Clears the terminal
-    os.system('clear')
-
     while True:
         print('Input the desired START date (DD/MM/YYYY):\n')
         start_date = input()
@@ -614,6 +611,7 @@ def main():
                     continue
 
         elif choice == '2':
+            os.system('clear')
             print('Select from one of the following years:')
             print('2021, 2022, 2023')
 
@@ -635,6 +633,7 @@ def main():
                     continue
 
         elif choice == '3':
+            os.system('clear')
             time_period = input_time_period()
             time_period_data = get_data_dict('income', time_period)
             key_values = input_key_values(time_period_data)
@@ -643,6 +642,7 @@ def main():
             break
         
         elif choice == '4':
+            os.system('clear')
             time_period = input_time_period()
             time_period_data = get_data_dict('expense', time_period)
             key_values = input_key_values(time_period_data)
@@ -653,7 +653,7 @@ def main():
         else:
             # Clears the terminal
             os.system('clear')
-            
+
             print('Invalid choice...')
 
 
