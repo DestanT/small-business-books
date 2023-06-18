@@ -43,11 +43,13 @@ def record_data(worksheet, year):
 
     # Gives user correctly lengthed example of input.
     example_print = ''
-    for _ in range(len(headings_list[0:-3])): # -3 because date index, also, not considered.
+    # -3 because date index, also, not considered.
+    for _ in range(len(headings_list[0:-3])):
         example_print += ',305'
 
     while True:
-        print(f'Enter the date and {worksheet} data for the year {year}, separated by commas.')
+        print(f'Enter the date and {worksheet} data')
+        print(f'for the year {year}, separated by commas.')
         print('Data should be in the corresponding order:\n')
         print(headings_string)
         print(f'Example: DD/MM{example_print}\n')
@@ -158,7 +160,7 @@ def calculate_totals(worksheet, data):
     total_column = worksheet_to_update.find('Total').col
 
     total = 0
-    for num in data[1:-1]: # ignores date[1] and card[-1] payments
+    for num in data[1:-1]:  # ignores date[1] and card[-1] payments
         total += int(num)
     # Update "Total" column in specified worksheet
     worksheet_to_update.update_cell(row_to_update, total_column, total)
@@ -284,7 +286,7 @@ def get_data_dict(worksheet, dates):
         end_date_row = desired_worksheet.find(end_date).row
 
         # -2 and -1 indices due to google sheets numbering convention
-        time_period_data = list_of_dicts[start_date_row-2 : end_date_row-1]
+        time_period_data = list_of_dicts[start_date_row - 2: end_date_row - 1]
         return time_period_data
 
     # Else:
@@ -302,7 +304,7 @@ def get_data_dict(worksheet, dates):
     last_row = desired_worksheet.find(start_date_dicts[-1]['Date']).row
 
     # data dict: start_date - 31st December
-    start_date_data = start_date_dicts[start_date_row-2 : last_row-1]
+    start_date_data = start_date_dicts[start_date_row - 2: last_row - 1]
 
     # extends list
     time_period_data.extend(start_date_data)
@@ -319,11 +321,10 @@ def get_data_dict(worksheet, dates):
         first_row = desired_worksheet.find(data_dicts[0]['Date']).row
         last_row = desired_worksheet.find(data_dicts[-1]['Date']).row
 
-        date_data = data_dicts[first_row-2 : last_row-1]
+        date_data = data_dicts[first_row - 2: last_row - 1]
 
         # extends list
         time_period_data.extend(date_data)
-
 
     # End date
     print(f"Data between 01/01/{end_year} and {end_date}")
@@ -337,7 +338,7 @@ def get_data_dict(worksheet, dates):
     first_row = desired_worksheet.find(end_date_dicts[0]['Date']).row
 
     # data dict: 1st January - end_date
-    end_date_data = end_date_dicts[first_row-2 : end_date_row-1]
+    end_date_data = end_date_dicts[first_row - 2: end_date_row - 1]
 
     # extends list
     time_period_data.extend(end_date_data)
@@ -419,7 +420,7 @@ def concatenate_data(labels, data_dict):
 
     Returns
     ----------
-    Data Tuple containing: 
+    Data Tuple containing:
     [0]dates_list (list)
     [1]data_list (list of lists)
     """
@@ -476,7 +477,7 @@ def print_daily_chart(labels, data_tuple):
     yticks_range = math.ceil((max(max_value_list) / 200))
 
     # Plotext terminal plots
-    plt.multiple_bar(dates_list, data_lists, label = labels)
+    plt.multiple_bar(dates_list, data_lists, label=labels)
     plt.title('Daily Bar Chart')
     plt.theme('dark')
     plt.yticks([200 * i for i in range(yticks_range)])
@@ -520,7 +521,7 @@ def print_weekly_chart(labels, data_tuple):
 
         weekly_total = []
         for y in range(weeks):
-            weekly_total.append(sum(separated_data_list[(y * 7) : (y * 7 + 7)]))
+            weekly_total.append(sum(separated_data_list[(y * 7): (y * 7 + 7)]))
 
         totals_data_lists.append(weekly_total)
 
@@ -534,7 +535,7 @@ def print_weekly_chart(labels, data_tuple):
     yticks_range = math.ceil((max(max_value_list) / 1000))
 
     # Plotext terminal plots
-    plt.multiple_bar(week_start_date, totals_data_lists, label = labels)
+    plt.multiple_bar(week_start_date, totals_data_lists, label=labels)
     plt.title('Weekly Bar Chart')
     plt.theme('dark')
     plt.yticks([1000 * i for i in range(yticks_range)])
@@ -609,7 +610,7 @@ def print_monthly_chart(labels, data_tuple):
     yticks_range = math.ceil((max(max_value_list) / 1000))
 
     # Plotext terminal plots
-    plt.multiple_bar(month_year_list, totals_data_lists, label = labels)
+    plt.multiple_bar(month_year_list, totals_data_lists, label=labels)
     plt.title('Monthly Bar Chart')
     plt.theme('dark')
     plt.yticks([1000 * i for i in range(yticks_range)])
@@ -637,7 +638,8 @@ def export_data(data_tuple):
 
     worksheet_to_update = SHEET.worksheet('exported_data')
 
-    # Places time data in the first available row to keep track of when data was exported
+    # Places time data in the first available row
+    # to keep track of when data was exported
     todays_date = str(datetime.now())
     first_available_row = len(worksheet_to_update.get_all_values()) + 1
     worksheet_to_update.update_cell(first_available_row, 1, todays_date)
