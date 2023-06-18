@@ -1,40 +1,34 @@
-# Small Business Books
+# __Small Business Books__
 
-## Table of Contents
+## __Table of Contents__
 1. [Introduction](#introduction)
 2. [Goals](#goals)
 3. [Flow of Logic](#flow-of-logic)
 4. [Features:](#features)
-    1. [The Main Menu](#the-main-menu)
-    2. [Record Income (Option 1)](#record-income-(option-1))
-    3. [Record Expense (Option 2)](#record-expense-(option-2))
-    4. [View Charts (Option 3)](#view-charts-(option-3))
-    5. [The Export Function](#the-export-function)
+    * [The Main Menu](#the-main-menu)
+    * [Record Income (Option 1)](#record-income-option-1)
+    * [Record Expense (Option 2)](#record-expense-option-2)
+    * [View Income Charts (Option 3)](#view-income-charts-option-3)
+    * [View Expense Charts (Option 4)](#view-expense-charts-option-4)
+    * [The Export Data Function](#the-export-data-function)
 5. [Future Features/Roadmap](#future-featuresroadmap)
 6. [Testing](#testing)
-    1. [Lighthouse Tests](#lighthouse-tests)
-    2. [Validator Testing](#validator-testing)
-    3. [Process](#process)
 7. [Challenges & Bugs](#challenges--bugs)
-    1. [Challenges](#challenges)
-    2. [Fixed Bugs](#fixed-bugs)
-    3. [Unfixed Bugs](#unfixed-bugs)
 8. [Technologies Used](#technologies-used)
 9. [Deployment](#deployment)
 10. [Creating the Heroku app](#creating-the-heroku-app)
 11. [Development](#development)
 12. [Credits](#credits)
-    1. [Content](#content)
 
-## Introduction
+## __Introduction__
 Small Business Books is a Python-based command-line application designed to assist small businesses in managing their financial data. The application allows users to input income and expense data, which is then updated in a Google Sheets spreadsheet via the Google Sheets API.
 
 Using Google Sheets as a database and leveraging the power of Python, the user can input a date range to visualise their incomes and expenses, allowing them to easily track and monitor their financial performance over time.
 
 To access the application, visit the Heroku app [**here**](https://small-business-books.herokuapp.com/). You can also view the worksheet on Google Sheets by clicking [**here**](https://docs.google.com/spreadsheets/d/1GSfZcFmG2D2p7pMAxzfF4QCuH93I7T6DGtliOl3ZAEU/edit?usp=sharing).
 
-## Goals
-As a small business owner, the Small Business Books application helps me achieve the following goals:
+## __Goals__
+As a small business owner, the Small Business Books application helps its user achieve the following goals:
 * Input income data.
 * Input expense data.
 * Consolidate all income and expense data in one place (Google Sheets).
@@ -47,17 +41,17 @@ As the owner of the application, I am committed to:
 * Adding new parameters/functions over time based on user needs.
 * Ensuring the application remains bug-free by addressing user-reported issues promptly.
 
-## Flow of Logic
+## __Flow of Logic__
 ![Flowchart](/documentation/small-business-books-flowchart.png)
 
-## Features:
-### The Main Menu
+## __Features:__
+### __The Main Menu__
 ![Main Menu](/documentation/main-menu.png)\
 The main menu is the first thing a user will interact with. It provides users with options to access different functionalities of the application. Key features of the main menu are:
 * User input validation: The application validates the user's input and prompts for correct input if necessary. Ensuring only valid inputs are accepted.
 * Selection of options: A list of options appear for users to choose from. These options allow users to choose different functionalities available in the application.
 
-### Record Income (Option 1)
+### __Record Income (Option 1)__
 ![Record Income Data](/documentation/enter-income-data.png)\
 The Records Income feature allows users to input income data in CSV format into Google Sheets using the Google Sheets API. The features include the following functionalities:
 * Dynamic heading detection: The application automatically detects headings in the first row of the spreadsheet to accommodate potential changes.
@@ -65,10 +59,10 @@ The Records Income feature allows users to input income data in CSV format into 
 * Data point validation: The application validates the number of data points provided by the user. It checks the number of columns of data needed and displays an error if an incorrect number of data points are given. This helps ensure data integrity.
 * Total income calculations: The application calculates the total income based on the provided data points. It updates Google Sheets accordingly, providing a convenient way to track and view in the future.
 
-### Record Expense (Option 2)
+### __Record Expense (Option 2)__
 The Record Expense feature is similar to the Record Expense feature and allows users to input expense data in CSV format into Google Sheets using the Google Sheets API. The functionalities of the Record Expense feature are identical to those of the Record Income feature.
 
-### View Income Charts (Option 3)
+### __View Income Charts (Option 3)__
 The View Income Charts feature allows users to visualise their income data using bar charts in the terminal. The application prompts users for the following information to generate the charts:
 * Start and end dates: Users are prompted to enter the start and end dates for the data range they want to visualise. The application validates the date format (DD/MM/YYYY) entered by the user. It checks for valid dates, ensuring that the end date is after the start date.
 * Parameter for the charts: Users are prompted to enter the parameters they want to view (selection of options are automatically displayed). The application verifies the existence of the entered parameters and prompts for correction if necessary. Users can enter the parameters in any order they wish to display them, and the application performs case-insensitive matching.
@@ -79,16 +73,16 @@ The View Income Charts feature allows users to visualise their income data using
   * Monthly: If the data range is over 14 weeks, a monthly bar chart is displayed.
     * Totals calculations are done for each month the data is from.
 
-### View Expense Charts (Option 4)
+### __View Expense Charts (Option 4)__
 The View Expense Charts feature is identical to the View Income Charts feature. With the exception, of course, of viewing expense data instead. Functionalities are identical.
 
-### The Export Data Function
+### __The Export Data Function__
 The Export Data Function allows users to export the charted data to a separate Sheet within the same Spreadsheet in Google Sheets. Here's how it works:
 * Current date and time: The application uses the "datetime" library to retrieve the current date and time. This information is added as a form of timestamp for the exported data.
 * Finding the first available row: The application identifies the first available row within the destination Sheet where the data is appended. This ensures that the exported data does not overwrite any existing data.
 * Handling large export requests: In case of larger export requests that might exceed the quota limitations of the Google Sheets API, a delay timer is set. This delay ensures that the application adheres to the API limitations and avoids any errors/disruptions during the export process.
 
-## Future Features/Roadmap
+## __Future Features/Roadmap__
 * Function to add and remove staff members from Google Sheets: This would allow users to add and remove staff members and other parameters as the changes arise and are needed, without the need to directly interact with Google Sheets itself.
 * Split expenses into proper groups: Instead of having all utilities categorized under a single group, for example. This feature would aim to enhance the expense tracking feature and would allow users to make smarter more concise decisions for their business.
 * View line graphs and scatter diagrams: In addition to the existing bar chart functionality, this feature would enable users to visualise their income and expense data from "another angle". Trends, patterns, and correlations can be easier to spot, for some, using different types of graph visualisation.
@@ -96,7 +90,8 @@ The Export Data Function allows users to export the charted data to a separate S
 * Improved user experience: optimising and reworking certain functions (for example, the export data function) to enhance the application's overall performance and reduce wait times.
 * Dynamic Google Sheets creation: Implementation of the function to automatically create new Google Sheets within the Spreadsheet as needed. Currently, the application is limited to the existing Sheets and the user would have to manually intervene from Google Sheets to create new Sheets.
 
-## Testing
+## __Testing__
+### __Pylint__
 To ensure code quality and coding standards, the Python code in "run.py" was tested using the [**Pylint**](https://pypi.org/project/pylint/) tool. The latest iteration of the project scored a 9.31/10. During the testing process all major issues and most minor issues were addressed, improving the overall code quality. Here are a few notable ones that remained:
 * run.py:244:0: R0914: Too many local variables (22/15) (too-many-locals)
 * run.py:541:0: R0914: Too many local variables (19/15) (too-many-locals)
@@ -110,8 +105,10 @@ The above were ignored as they were not considered fundamentally bad for the ove
 After several iterations of changing the code to try and satisfy both Pylint and the overall functionality, failed, this was ultimately kept as is. Having also not found anything alarming [online](https://pylint.readthedocs.io/en/latest/user_guide/messages/warning/expression-not-assigned.html) and message boards that suggested this was a serious fault, it was also, ultimately, ignored. Please consider letting me know if you think was a mistake on my part, and please condiser letting me know how you would have tackled this part of the code.
 
 ### __Process__
+This section aims to provide a comprehensive guide for testing the application. Feel free to deviate from it as necessary.
 
 __The Main Menu__
+
 | Test | Expected Outcome(s) |
 | :--- | :--- |
 | Click “Run Program” | Application starts and the main menu is displayed |
@@ -124,6 +121,7 @@ __The Main Menu__
 | Enter “4” | Starts the “View Expense Charts” function |
 
 __The Record Income Function__
+
 | Test | Expected Outcome(s) |
 | :--- | :--- |
 | Input a year not in the list | Throws an error and prompts a re-try |
@@ -138,20 +136,11 @@ __The Record Income Function__
 | Enter **correct** date, followed **correct** number of data points | Updates corresponding worksheet in Google Sheets |
 
 __The Record Expense Function__
-| Test | Expected Outcome(s) |
-| :--- | :--- |
-| Input a year not in the list | Throws an error and prompts a re-try |
-| Input a valid year | Application continues to the next question |
-|||
-| Enter date in the wrong format | Throws an error and prompts a re-try |
-| Enter invalid date (eg 30/02) | Throws an error and prompts a re-try |
-| Enter an incorrect input (a “space”) | Throws an error and prompts a re-try |
-| Enter **correct** date, followed by a string | Throws an error and prompts a re-try |
-| Enter **correct** date, followed by a not enough data points | Throws an error, gives feedback and prompts a re-try |
-| Enter **correct** date, followed by a too many data points | Throws an error, gives feedback and prompts a re-try |
-| Enter **correct** date, followed **correct** number of data points | Updates corresponding worksheet in Google Sheets |
+
+Testing process for this function is identical to the Record Income function
 
 __The View Income Charts Function__
+
 | Test | Expected Outcome(s) |
 | :--- | :--- |
 | Input date before 01/01/2021 | Throws an error and prompts a re-try |
@@ -170,19 +159,12 @@ __The View Income Charts Function__
 | Input valid selection (in any order you wish) | Application shows bar chart with the data in the given order |
 |||
 | Choose (M)enu | Takes user back to the main menu |
-| Choose (E)xport | Timestamps data and exports it to Google Sheets |
+| Choose (E)xport | Timestamps data and exports it to Google Sheets, then takes the user back to the main menu |
 | Choose any other input | Throws an error and prompts a re-try |
 
 __The View Expense Charts Function__
-| Test | Expected Outcome(s) | Outcome |
-| :— | :— | :—: |
-| Clicking “Run Program” | Application starts and the main menu is displayed | &#9745; |
-| Entering an incorrect input (a string) | Throws an error and prompts user to re-try | &#9745; |
-| Entering an incorrect input (integers) | Throws an error and prompts user to re-try | &#9745; |
-| Entering an incorrect input (a “space”) | Throws an error and prompts user to re-try | &#9745; |
-| Entering “1” | Starts the “Record Income” function | &#9745; |
-| Entering “2” | Starts the “Record Expense” function | &#9745; |
-| Entering “3” | Starts the “View Charts” function | &#9745; |
+
+Testing process for this function is identical to the Record Income function
 
 ## __Challenges & Bugs__
 
@@ -205,11 +187,11 @@ Among many fixed bugs throughout the project, these are a few notable ones:
 ### __Unfixed Bugs__
 To the best of my knowledge, no unresolved bugs remain in the current version of the application. All identified bugs were addressed and fixed during the development process.
 
-## Technologies Used
-### Languages
+## __Technologies Used__
+### __Languages__
 * Python 3.11.1
 
-### Libraries
+### __Libraries__
 * **Datetime**: Primarily used for date format validation and timestamps
 * **Math**: Used for basic mathematical operations 
 * **OS**: Used for clearing the terminal for a better user experience
@@ -217,11 +199,11 @@ To the best of my knowledge, no unresolved bugs remain in the current version of
 * **Plotext**: Used to visualise data as bar charts
 * **GSpread**: Used to interact with Google Sheets via the Google Sheets API
 
-### Tools
+### __Tools__
 * [**Heroku**](https://www.heroku.com/) - Used to house the in-browser app
 * [**Lucid Charts**](https://www.lucidchart.com/) - Used to create the flow chart diagram
 
-## Deployment
+## __Deployment__
 The project was deployed on GitHub pages from the 'Main Branch Source Code' using the following steps:
 * 'git add .', 'git commit" and 'git push' commands were issued one final time when the project was ready and finished.
 * On Github the repository for the project was selected.
@@ -236,7 +218,7 @@ You can view the application on Heroku by clicking [**here**](https://small-busi
 
 Click [**here**](https://docs.google.com/spreadsheets/d/1GSfZcFmG2D2p7pMAxzfF4QCuH93I7T6DGtliOl3ZAEU/edit?usp=sharing) to view the worksheet.
 
-## Creating the Heroku app
+## __Creating the Heroku app__
 
 Before creating the Heroku app:
 1. Make sure you have a file named “requirements.txt” in your main project folder.
@@ -263,7 +245,7 @@ Now, you can proceed with creating the Heroku app:
 14. Then, either select “Enable Automatic Deploys” or “Deploy Branch”; the difference is that one automatically deploys the app every time a change is pushed to GitHub and the other needs to be redeployed manually every time.
 15. You should now have a working Heroku app on your dashboard.
 
-## Development
+## __Development__
 If you would like to contribute to this project, please follow the following steps:
 
 As the project uses a creds.json file for sensitive API keys, you would first need to: 
@@ -298,7 +280,7 @@ If you wish to use any parts of the project for your project, you are welcome to
 
 Thank you for your interest in the project, and I look forward to any contributions or acknowledgments!
 
-## Credits 
+## __Credits__ 
 ### __Content__
 * Inspirations for the project were taken from the "Love Sandwiches" project by Code Institute, any re-used code was credited in the run.py file
 * [Python Documentation](https://docs.python.org/3/contents.html)
@@ -311,4 +293,3 @@ Thank you for your interest in the project, and I look forward to any contributi
 
 
 ### IMAGES IN FEATURES
-### TABLE OF INSTRUCTUIONS ON HOW TO TEST - change tense
