@@ -477,7 +477,6 @@ def print_daily_chart(labels, data_tuple):
 
     # Plotext terminal plots
     plt.multiple_bar(dates_list, data_lists, label = labels)
-    plt.limit_size()
     plt.title('Daily Bar Chart')
     plt.theme('dark')
     plt.yticks([200 * i for i in range(yticks_range)])
@@ -536,7 +535,6 @@ def print_weekly_chart(labels, data_tuple):
 
     # Plotext terminal plots
     plt.multiple_bar(week_start_date, totals_data_lists, label = labels)
-    plt.limit_size()
     plt.title('Weekly Bar Chart')
     plt.theme('dark')
     plt.yticks([1000 * i for i in range(yticks_range)])
@@ -612,7 +610,6 @@ def print_monthly_chart(labels, data_tuple):
 
     # Plotext terminal plots
     plt.multiple_bar(month_year_list, totals_data_lists, label = labels)
-    plt.limit_size()
     plt.title('Monthly Bar Chart')
     plt.theme('dark')
     plt.yticks([1000 * i for i in range(yticks_range)])
