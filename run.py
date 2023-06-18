@@ -1,10 +1,11 @@
-import gspread
-from google.oauth2.service_account import Credentials
+""" Libraries used """
 from datetime import datetime
-import plotext as plt
 import math
 import os
 import time
+import plotext as plt
+import gspread
+from google.oauth2.service_account import Credentials
 
 # Code taken from Code Institute's "Love Sandwiches" project
 SCOPE = [
@@ -12,7 +13,7 @@ SCOPE = [
     'https://www.googleapis.com/auth/drive.file',
     'https://www.googleapis.com/auth/drive'
     ]
-    
+
 # Code taken from Code Institute's "Love Sandwiches" project
 CREDS = Credentials.from_service_account_file('creds.json')
 SCOPED_CREDS = CREDS.with_scopes(SCOPE)
@@ -34,13 +35,10 @@ def record_data(worksheet, year):
 
     # Gives user correctly lengthed example of input.
     example_print = ''
-    for i in range(len(headings_list[0:-3])): # -3 because date index, also, not considered.
+    for _ in range(len(headings_list[0:-3])): # -3 because date index, also, not considered.
         example_print += ',305'
 
     while True:
-        # Clears the terminal
-        os.system('clear')
-
         print(f'Enter the date and {worksheet} data for the year {year}, separated by commas.')
         print('Data should be in the corresponding order:\n')
         print(headings_string)
@@ -69,19 +67,30 @@ def validate_data(data, headings):
     # CREDIT - datetime method:
     # https://paperbun.org/validate-date-string-format-in-python/
     try:
-        datetime.strptime(data[0], '%d/%m/%Y') # Checks date; index 0
-        [int(value) for value in data[1:]] # Skips date index
+        # Checks date; index 0
+        datetime.strptime(data[0], '%d/%m/%Y')
+
+        # Checks if int, skips date index
+        int_data = list(map(int, data[1:]))
+        is_int = all(isinstance(value, int) for value in int_data)
+        if is_int is False:
+            raise ValueError(
+                'data points must be integers'
+            )
+
+        # Compares length of data input to length of headings
         if len(data) != len(headings):
             raise ValueError(
                 f'Exactly {len(headings)-1} values needed, you entered {len(data)-1}'
             )
+
     except ValueError as e:
-        print(f'Invalid date string: {e}, please try again.\n')
+        print(f'Invalid input: {e}, please try again.\n')
         return False
     except TypeError as e:
         print(f'Invalid data: {e}, please try again.\n')
         return False
-    
+
     return True
 
 
@@ -96,12 +105,12 @@ def update_worksheet(worksheet, data):
     date = data[0]
     date_list = date.split('/')
     year = date_list[2]
-    
+
     print(f"Updating '{worksheet}_{year}' worksheet...\n")
     worksheet_to_update = SHEET.worksheet(f'{worksheet}_{year}')
     row_to_update = worksheet_to_update.find(date).row
-         
-    income_data = [value for value in data]
+
+    income_data = list(data)
     for i in range(len(income_data)):
         worksheet_to_update.update_cell(row_to_update, i + 1, income_data[i])
 
@@ -126,7 +135,7 @@ def calculate_totals(worksheet, data):
         total += int(num)
     # Update "Total" column in specified worksheet
     worksheet_to_update.update_cell(row_to_update, total_column, total)
-    
+
     if worksheet == 'income':
         card_column = worksheet_to_update.find('Card').col
         card_value = worksheet_to_update.cell(row_to_update, card_column).value
@@ -135,7 +144,7 @@ def calculate_totals(worksheet, data):
         cash = total - int(card_value)
         # Update "Cash" column in specified worksheet
         worksheet_to_update.update_cell(row_to_update, cash_column, cash)
-        
+
         print('Cash and')
 
     print('Total sum calculated.\n')
@@ -154,8 +163,8 @@ def input_time_period():
 
         if validate_data([start_date], [1]):
             break
-        else:
-            continue
+
+        continue
 
     while True:
         print(f'Input the desired END date (Later than {start_date}):\n')
@@ -166,16 +175,17 @@ def input_time_period():
             second_date = datetime.strptime(end_date, '%d/%m/%Y')
 
             if second_date < first_date or second_date == first_date:
-                print('Please try again...')
-                continue
-        except:
-            pass
+                raise ValueError
+
+        except ValueError:
+            print('Please try again')
+            continue
 
         if validate_data([end_date], [1]):
             print(f'From {start_date} to {end_date} selected.')
             return [start_date, end_date]
-        else:
-            continue
+
+        continue
 
 
 def get_data_dict(worksheet, dates):
@@ -191,14 +201,16 @@ def get_data_dict(worksheet, dates):
     start_date = dates[0]
     temp_list = start_date.split('/')
     start_year = temp_list[2]
-    
+
     # End date
     end_date = dates[1]
     temp_list = end_date.split('/')
     end_year = temp_list[2]
 
     if start_year == end_year:
-        print(f"Data between {start_date} and {end_date} from '{worksheet}_{start_year}' is being compiled...")
+        print(f"Data between {start_date} and {end_date}")
+        print(f"from '{worksheet}_{start_year}' is being compiled...")
+
         desired_worksheet = SHEET.worksheet(f'{worksheet}_{start_year}')
         list_of_dicts = desired_worksheet.get_all_records()
 
@@ -208,58 +220,62 @@ def get_data_dict(worksheet, dates):
         # -2 and -1 indices due to google sheets numbering convention
         time_period_data = list_of_dicts[start_date_row-2 : end_date_row-1]
         return time_period_data
-    else:
-        time_period_data = []
 
-        # Start date - till the end of the year
-        print(f"Data between {start_date} and 31/12/{start_year} from '{worksheet}_{start_year}' is being compiled...")
-        desired_worksheet = SHEET.worksheet(f'{worksheet}_{start_year}')
-        start_date_dicts = desired_worksheet.get_all_records()
-        start_date_row = desired_worksheet.find(start_date).row
+    # Else:
+    time_period_data = []
 
-        # last day of that year
-        last_row = desired_worksheet.find(start_date_dicts[-1]['Date']).row
+    # Start date - till the end of the year
+    print(f"Data between {start_date} and 31/12/{start_year}")
+    print(f"from '{worksheet}_{start_year}' is being compiled...")
 
-        # data dict: start_date - 31st December
-        start_date_data = start_date_dicts[start_date_row-2 : last_row-1]
+    desired_worksheet = SHEET.worksheet(f'{worksheet}_{start_year}')
+    start_date_dicts = desired_worksheet.get_all_records()
+    start_date_row = desired_worksheet.find(start_date).row
 
-        # extends list
-        time_period_data.extend(start_date_data)
+    # last day of that year
+    last_row = desired_worksheet.find(start_date_dicts[-1]['Date']).row
 
+    # data dict: start_date - 31st December
+    start_date_data = start_date_dicts[start_date_row-2 : last_row-1]
 
-        # List of all the years inbetween start and end year, if any
-        years = [year for year in range(int(start_year)+1, int(end_year))]
+    # extends list
+    time_period_data.extend(start_date_data)
 
-        # For loop only runs if "years" variable has values in list 
-        for year in years:
-            print(f"Data from '{worksheet}_{year}' is being compiled...")
-            desired_worksheet = SHEET.worksheet(f'{worksheet}_{year}')
-            data_dicts = desired_worksheet.get_all_records()
-            
-            first_row = desired_worksheet.find(data_dicts[0]['Date']).row
-            last_row = desired_worksheet.find(data_dicts[-1]['Date']).row
+    # List of all the years inbetween start and end year, if any
+    years = list(range(int(start_year)+1, int(end_year)))
 
-            date_data = data_dicts[first_row-2 : last_row-1]
-            
-            # extends list
-            time_period_data.extend(date_data)
+    # For loop only runs if "years" variable has values in list
+    for year in years:
+        print(f"Data from '{worksheet}_{year}' is being compiled...")
+        desired_worksheet = SHEET.worksheet(f'{worksheet}_{year}')
+        data_dicts = desired_worksheet.get_all_records()
 
+        first_row = desired_worksheet.find(data_dicts[0]['Date']).row
+        last_row = desired_worksheet.find(data_dicts[-1]['Date']).row
 
-        # End date
-        print(f"Data between 01/01/{end_year} and {end_date} from '{worksheet}_{end_year}' is being compiled...")
-        desired_worksheet = SHEET.worksheet(f'{worksheet}_{end_year}')
-        end_date_dicts = desired_worksheet.get_all_records()
-        end_date_row = desired_worksheet.find(end_date).row
-
-        # first day of the year
-        first_row = desired_worksheet.find(end_date_dicts[0]['Date']).row
-
-        # data dict: 1st January - end_date
-        end_date_data = end_date_dicts[first_row-2 : end_date_row-1]
+        date_data = data_dicts[first_row-2 : last_row-1]
 
         # extends list
-        time_period_data.extend(end_date_data)
-        return time_period_data
+        time_period_data.extend(date_data)
+
+
+    # End date
+    print(f"Data between 01/01/{end_year} and {end_date}")
+    print(f"from '{worksheet}_{end_year}' is being compiled...")
+
+    desired_worksheet = SHEET.worksheet(f'{worksheet}_{end_year}')
+    end_date_dicts = desired_worksheet.get_all_records()
+    end_date_row = desired_worksheet.find(end_date).row
+
+    # first day of the year
+    first_row = desired_worksheet.find(end_date_dicts[0]['Date']).row
+
+    # data dict: 1st January - end_date
+    end_date_data = end_date_dicts[first_row-2 : end_date_row-1]
+
+    # extends list
+    time_period_data.extend(end_date_data)
+    return time_period_data
 
 
 def input_key_values(list_of_dicts):
@@ -272,7 +288,7 @@ def input_key_values(list_of_dicts):
     os.system('clear')
 
     # Get list of keys
-    keys = [key for key in list_of_dicts[0]]
+    keys = list(list_of_dicts[0])
 
     # Ignores [0], date
     choice_headings = ''
@@ -281,13 +297,13 @@ def input_key_values(list_of_dicts):
     # Change key names to lowercase, for later use
     temp = [key.lower() for key in keys]
     keys = temp
-    
+
     while True:
         print('From the list below, select the data you want to display,')
         print('in the order in which you want to display it:')
         print('(separated by commas)\n')
         print(f'{choice_headings}\n')
-        
+
         choices = input()
 
         # List of choices
@@ -311,9 +327,9 @@ def input_key_values(list_of_dicts):
 
             print(f'{e}, please try again...\n')
             continue
-        
+
         break
-    
+
     return labels_list
 
 
@@ -343,7 +359,7 @@ def concatenate_data(labels, data_dict):
         for x in range(len(data_dict)):
             new_list.append(data_dict[x][item])
         data_list.append(new_list)
-        
+
     return dates_list, data_list
 
 
@@ -362,7 +378,7 @@ def print_daily_chart(labels, data_tuple):
 
     # Calculate yticks in plotext using max_value_list
     yticks_range = math.ceil((max(max_value_list) / 200))
-    
+
     # Plotext terminal plots
     plt.multiple_bar(dates_list, data_lists, label = labels)
     plt.title('Daily Bar Chart')
@@ -379,7 +395,7 @@ def print_weekly_chart(labels, data_tuple):
     """
     dates_list = data_tuple[0]
     data_lists = data_tuple[1]
-    
+
     # New list of dates, every 7 days
     week_start_date = dates_list[0::7]
 
@@ -392,13 +408,13 @@ def print_weekly_chart(labels, data_tuple):
     # For loop length depending on how many "key" values were chosen
     for x in range(len(data_lists)):
         separated_data_list = data_lists[x]
-        
+
         weekly_total = []
         for y in range(weeks):
             weekly_total.append(sum(separated_data_list[(y * 7) : (y * 7 + 7)]))
-        
+
         totals_data_lists.append(weekly_total)
-    
+
     # Finds max value from all lists in data_lists
     max_value_list = []
     for i in range(len(totals_data_lists)):
@@ -407,13 +423,13 @@ def print_weekly_chart(labels, data_tuple):
 
     # Calculate yticks in plotext using max_value_list
     yticks_range = math.ceil((max(max_value_list) / 1000))
-    
+
     # Plotext terminal plots
     plt.multiple_bar(week_start_date, totals_data_lists, label = labels)
     plt.title('Weekly Bar Chart')
     plt.theme('dark')
     plt.yticks([1000 * i for i in range(yticks_range)])
-    plt.show()  
+    plt.show()
 
     return labels, week_start_date, totals_data_lists
 
@@ -436,7 +452,9 @@ def print_monthly_chart(labels, data_tuple):
     # Add unique month/years only to list, for use in plotext
     month_year_list = []
     for month_year in temp_list:
-        [month_year_list.append(month_year) for month_year in temp_list if month_year not in month_year_list]
+        [month_year_list.append(month_year)
+        for month_year in temp_list
+        if month_year not in month_year_list]
 
     # This will be the "new" and summed up data_lists used for plotext
     totals_data_lists = []
@@ -458,7 +476,7 @@ def print_monthly_chart(labels, data_tuple):
 
         # Get list of lists, for use in plotext
         totals_data_lists.append(temp_totals)
-    
+
     # Finds max value from all lists in data_lists
     max_value_list = []
     for i in range(len(totals_data_lists)):
@@ -467,7 +485,7 @@ def print_monthly_chart(labels, data_tuple):
 
     # Calculate yticks in plotext using max_value_list
     yticks_range = math.ceil((max(max_value_list) / 1000))
-    
+
     # Plotext terminal plots
     plt.multiple_bar(month_year_list, totals_data_lists, label = labels)
     plt.title('Monthly Bar Chart')
@@ -476,7 +494,7 @@ def print_monthly_chart(labels, data_tuple):
     plt.show()
 
     return labels, month_year_list, totals_data_lists
-    
+
 
 def export_data(data_tuple):
     """
@@ -492,7 +510,7 @@ def export_data(data_tuple):
     totals_lists = data_tuple[2]
 
     worksheet_to_update = SHEET.worksheet('exported_data')
-    
+
     # Places time data in the first available row to keep track of when data was exported
     todays_date = str(datetime.now())
     first_available_row = len(worksheet_to_update.get_all_values()) + 1
@@ -514,7 +532,7 @@ def export_data(data_tuple):
 
         for z in range(len(totals_lists[0])):
             worksheet_to_update.update_cell(first_available_row + 1 + z, y + 2, totals_lists[y][z])
-        
+
         # Clears the terminal
         os.system('clear')
 
@@ -530,7 +548,7 @@ def export_data(data_tuple):
 
         time.sleep(sleep_time)
         print('Exporting data...')
-    
+
     print('Complete.')
 
 
@@ -566,15 +584,15 @@ def print_bar_chart(labels, data_tuple):
             export_data(new_data)
             os.system('clear')
             main()
-        
+
         elif choice.lower() == 'm':
             os.system('clear')
             main()
-        
+
         else:
             print('Please choose a valid option...')
-    
-    
+
+
 def main():
     """
     Main function
@@ -597,7 +615,7 @@ def main():
             while True:
                 year = input()
 
-                if (year == '2021') or (year == '2022') or (year == '2023'):
+                if year in ('2021', '2022', '2023'):
                     income_data = record_data('income', year)
                     update_worksheet('income', income_data)
                     calculate_totals('income', income_data)
@@ -605,12 +623,11 @@ def main():
                     # Clears the terminal
                     os.system('clear')
                     break
-                
-                else:
-                    os.system('clear')
-                    print('Please enter a valid choice:')
-                    print('2021, 2022, 2023')
-                    continue
+
+                os.system('clear')
+                print('Please enter a valid choice:')
+                print('2021, 2022, 2023')
+                continue
 
         elif choice == '2':
             os.system('clear')
@@ -620,7 +637,7 @@ def main():
             while True:
                 year = input()
 
-                if (year == '2021') or (year == '2022') or (year == '2023'):
+                if year in ('2021', '2022', '2023'):
                     expense_data = record_data('expense', year)
                     update_worksheet('expense', expense_data)
                     calculate_totals('expense', expense_data)
@@ -628,12 +645,11 @@ def main():
                     # Clears the terminal
                     os.system('clear')
                     break
-                
-                else:
-                    os.system('clear')
-                    print('Please enter a valid choice:')
-                    print('2021, 2022, 2023')
-                    continue
+
+                os.system('clear')
+                print('Please enter a valid choice:')
+                print('2021, 2022, 2023')
+                continue
 
         elif choice == '3':
             os.system('clear')
@@ -643,7 +659,7 @@ def main():
             data_tuple = concatenate_data(key_values, time_period_data)
             print_bar_chart(key_values, data_tuple)
             break
-        
+
         elif choice == '4':
             os.system('clear')
             time_period = input_time_period()

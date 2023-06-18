@@ -286,6 +286,7 @@ Thank you for your interest in the project, and I look forward to any contributi
 
 ## Credits 
 ### __Content__
+* Inspirations for the project were taken from the "Love Sandwiches" project by Code Institute, any re-used code was credited in the run.py file
 * [Python Documentation](https://docs.python.org/3/contents.html)
 * [Datetime Documentation](https://docs.python.org/3/library/datetime.html)
 * [Gspread Documentation](https://docs.gspread.org/en/latest/index.html)
