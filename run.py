@@ -23,8 +23,16 @@ SHEET = GSPREAD_CLIENT.open('small_business_books')
 
 def record_data(worksheet, year):
     """
-    Get the date and data from the user,
-    returns data given as a list.
+    Get the date and data input from the user.
+
+    Parameters
+    ----------
+    worksheet (str)
+    year (str)
+
+    Returns
+    ----------
+    data_list (list)
     """
     headings_string = ''
     headings_list = SHEET.worksheet(f'{worksheet}_{year}').row_values(1)
@@ -60,9 +68,18 @@ def record_data(worksheet, year):
 def validate_data(data, headings):
     """
     Checks the date is in the right format,
-    Checks if data[1:] can be converted to int,
+    Checks if data entered after the date can be converted to int,
     Checks if len(data) matches len(headings),
     Raises Errors accordingly.
+
+    Parameters
+    ----------
+    data (list)
+    headings (list)
+
+    Returns
+    ----------
+    bool: True for valid, False for invalid.
     """
     # CREDIT - datetime method:
     # https://paperbun.org/validate-date-string-format-in-python/
@@ -96,8 +113,13 @@ def validate_data(data, headings):
 
 def update_worksheet(worksheet, data):
     """
-    Receives a data list, finds the date associated with data,
+    Finds the date associated with data,
     and updates specified worksheet.
+
+    Parameters
+    ----------
+    worksheet (str)
+    data (list)
     """
     # Clears the terminal
     os.system('clear')
@@ -121,6 +143,11 @@ def calculate_totals(worksheet, data):
     """
     Calculates total sums and updates specified worksheet.
     If worksheet == "income"; calculates cash value for the day.
+
+    Parameters
+    ----------
+    worksheet (str)
+    data (list)
     """
     date = data[0]
     date_list = date.split('/')
@@ -155,7 +182,10 @@ def input_time_period():
     Get start and end dates from the user.
     Validates each input for correct format,
     and checks if end date is later than start date.
-    Returns [start_date, end_date] list.
+
+    Returns
+    ----------
+    [start_date, end_date] list.
     """
     while True:
         print('Input the desired START date (DD/MM/YYYY):\n')
@@ -192,7 +222,15 @@ def get_data_dict(worksheet, dates):
     """
     Takes the worksheet and start/end dates as arguments,
     compiles a data_dict for all data within dates.
-    Returns time_period_data as a list of dicts.
+
+    Parameters
+    ----------
+    worksheet (str)
+    dates (list)
+
+    Returns
+    ----------
+    time_period_data: list of dicts [{dict}, {dict2}, ...]
     """
     # Clears the terminal
     os.system('clear')
@@ -280,9 +318,16 @@ def get_data_dict(worksheet, dates):
 
 def input_key_values(list_of_dicts):
     """
-    Takes key values from the first dict, [0], in argument,
+    Takes key values (headings) from the first dict, [0], in argument,
     asks the user to input choices from those keys only.
-    Returns list of labels.
+
+    Parameters
+    ----------
+    list_of_dicts: [{dict}, {dict2}, ...]
+
+    Returns
+    ----------
+    labels_list (list)
     """
     # Clears the terminal
     os.system('clear')
@@ -337,8 +382,18 @@ def concatenate_data(labels, data_dict):
     """
     Takes the chosen labels and loops through data_dict,
     groups the data from the key-value pairs (of label) into a list of lists.
-    Also makes a list of all dates from the data_dict.
-    Returns tuple of (dates as [] and data as [[x], [y], [z], ...])
+    Additionally makes a list of all dates from the data_dict.
+
+    Parameters
+    ----------
+    labels (list)
+    data_dict (list)
+
+    Returns
+    ----------
+    Data Tuple containing: 
+    [0]dates_list (list)
+    [1]data_list (list of lists)
     """
     # Clears the terminal
     os.system('clear')
@@ -366,6 +421,19 @@ def concatenate_data(labels, data_dict):
 def print_daily_chart(labels, data_tuple):
     """
     Prints daily plotext bar chart to the terminal
+    Return values used in export function.
+
+    Parameters
+    ----------
+    labels (list)
+    data_tuple (tuple)
+
+    Returns
+    ----------
+    Data Tuple containing:
+    [0]labels (list)
+    [1]dates_list (list)
+    [2]data_list (list of lists)
     """
     dates_list = data_tuple[0]
     data_lists = data_tuple[1]
@@ -392,6 +460,19 @@ def print_daily_chart(labels, data_tuple):
 def print_weekly_chart(labels, data_tuple):
     """
     Prints weekly plotext bar chart to the terminal
+    Return values used in export function.
+
+    Parameters
+    ----------
+    labels (list)
+    data_tuple (tuple)
+
+    Returns
+    ----------
+    Data Tuple containing:
+    [0]labels (list)
+    [1]week_start_date (list)
+    [2]totals_data_lists (list of lists)
     """
     dates_list = data_tuple[0]
     data_lists = data_tuple[1]
@@ -437,6 +518,19 @@ def print_weekly_chart(labels, data_tuple):
 def print_monthly_chart(labels, data_tuple):
     """
     Prints monthly plotext bar chart to the terminal
+    Return values used in export function.
+
+    Parameters
+    ----------
+    labels (list)
+    data_tuple (tuple)
+
+    Returns
+    ----------
+    Data Tuple containing:
+    [0]labels (list)
+    [1]month_year_list (list)
+    [2]totals_data_lists (list of lists)
     """
     dates_list = data_tuple[0]
     data_lists = data_tuple[1]
@@ -498,7 +592,11 @@ def print_monthly_chart(labels, data_tuple):
 
 def export_data(data_tuple):
     """
-    Exports data to a separate sheet in Google Sheets
+    Exports data to Google Sheets
+
+    Parameters
+    ----------
+    data_tuple (tuple)
     """
     # Clears the terminal
     os.system('clear')
@@ -554,9 +652,14 @@ def export_data(data_tuple):
 
 def print_bar_chart(labels, data_tuple):
     """
-    Depending on number of dates selected by user,
+    Depending on length of time selected by user,
     chooses to present plotext bar chart in;
     daily, weekly or monthly format.
+
+    Parameters
+    ----------
+    labels (list)
+    data_tuple (tuple)
     """
     # Clears the terminal
     os.system('clear')
