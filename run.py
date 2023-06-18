@@ -182,23 +182,46 @@ def input_time_period():
     Get start and end dates from the user.
     Validates each input for correct format,
     and checks if end date is later than start date.
+    Additionally makes sure the user stays within valid date ranges.
 
     Returns
     ----------
     [start_date, end_date] list.
     """
+    date1 = datetime.strptime('01/01/2021', '%d/%m/%Y')
+    date2 = datetime.strptime('30/12/2023', '%d/%m/%Y')
+
     while True:
+        print('Valid date range: 01/01/2021 - 30/12/2023')
         print('Input the desired START date (DD/MM/YYYY):\n')
         start_date = input()
+
+        # Date must be later than 01/01/2021
+        if date1 > datetime.strptime(start_date, '%d/%m/%Y'):
+            print('Invalid date selected, please try again')
+            continue
+
+        # Date must be before 30/12/2021
+        if datetime.strptime(start_date, '%d/%m/%Y') > date2:
+            print('Invalid date selected, please try again')
+            continue
 
         if validate_data([start_date], [1]):
             break
 
         continue
 
+    # Update date2 to 31st December 2023 from 30th
+    date2 = datetime.strptime('31/12/2023', '%d/%m/%Y')
+
     while True:
         print(f'Input the desired END date (Later than {start_date}):\n')
         end_date = input()
+
+        # Date must be no later than 31/12/2021
+        if datetime.strptime(end_date, '%d/%m/%Y') > date2:
+            print('Data only valid until 31/12/2023, please try again.')
+            continue
 
         try:
             first_date = datetime.strptime(start_date, '%d/%m/%Y')
