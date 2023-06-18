@@ -92,7 +92,7 @@ The Export Data Function allows users to export the charted data to a separate S
 
 ## __Testing__
 ### __Pylint__
-To ensure code quality and coding standards, the Python code in "run.py" was tested using the [**Pylint**](https://pypi.org/project/pylint/) tool. The latest iteration of the project scored a 9.31/10. During the testing process all major issues and most minor issues were addressed, improving the overall code quality. Here are a few notable ones that remained:
+To ensure code quality and coding standards, the Python code in "run.py" was tested using the [**Pylint**](https://pypi.org/project/pylint/) tool. The latest iteration of the project scored a 9.32/10. During the testing process no critical issues were found and most minor issues such as indentations were addressed, improving the overall code quality. Here are a few notable ones that remained:
 * run.py:244:0: R0914: Too many local variables (22/15) (too-many-locals)
 * run.py:541:0: R0914: Too many local variables (19/15) (too-many-locals)
 * run.py:725:0: R0915: Too many statements (57/50) (too-many-statements)

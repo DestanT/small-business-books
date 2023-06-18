@@ -196,20 +196,25 @@ def input_time_period():
         print('Input the desired START date (DD/MM/YYYY):\n')
         start_date = input()
 
-        # Date must be later than 01/01/2021
-        if date1 > datetime.strptime(start_date, '%d/%m/%Y'):
-            print('Invalid date selected, please try again')
+        try:
+            # Date must be later than 01/01/2021
+            if date1 > datetime.strptime(start_date, '%d/%m/%Y'):
+                print('Invalid date selected, please try again')
+                continue
+
+            # Date must be before 30/12/2021
+            if datetime.strptime(start_date, '%d/%m/%Y') > date2:
+                print('Invalid date selected, please try again')
+                continue
+
+            if validate_data([start_date], [1]):
+                break
+
             continue
 
-        # Date must be before 30/12/2021
-        if datetime.strptime(start_date, '%d/%m/%Y') > date2:
-            print('Invalid date selected, please try again')
+        except ValueError:
+            print('Invalid date, please try again')
             continue
-
-        if validate_data([start_date], [1]):
-            break
-
-        continue
 
     # Update date2 to 31st December 2023 from 30th
     date2 = datetime.strptime('31/12/2023', '%d/%m/%Y')
@@ -218,12 +223,12 @@ def input_time_period():
         print(f'Input the desired END date (Later than {start_date}):\n')
         end_date = input()
 
-        # Date must be no later than 31/12/2021
-        if datetime.strptime(end_date, '%d/%m/%Y') > date2:
-            print('Data only valid until 31/12/2023, please try again.')
-            continue
-
         try:
+            # Date must be no later than 31/12/2021
+            if datetime.strptime(end_date, '%d/%m/%Y') > date2:
+                print('Data only valid until 31/12/2023, please try again.')
+                continue
+
             first_date = datetime.strptime(start_date, '%d/%m/%Y')
             second_date = datetime.strptime(end_date, '%d/%m/%Y')
 
