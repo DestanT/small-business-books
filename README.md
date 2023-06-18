@@ -52,11 +52,13 @@ As the owner of the application, I am committed to:
 
 ## Features:
 ### The Main Menu
+![Main Menu](/documentation/main-menu.png)\
 The main menu is the first thing a user will interact with. It provides users with options to access different functionalities of the application. Key features of the main menu are:
 * User input validation: The application validates the user's input and prompts for correct input if necessary. Ensuring only valid inputs are accepted.
 * Selection of options: A list of options appear for users to choose from. These options allow users to choose different functionalities available in the application.
 
 ### Record Income (Option 1)
+![Record Income Data](/documentation/enter-income-data.png)\
 The Records Income feature allows users to input income data in CSV format into Google Sheets using the Google Sheets API. The features include the following functionalities:
 * Dynamic heading detection: The application automatically detects headings in the first row of the spreadsheet to accommodate potential changes.
 * Date format validation: The application validates the date format (DD/MM/YYYY).
@@ -95,69 +97,81 @@ The Export Data Function allows users to export the charted data to a separate S
 * Dynamic Google Sheets creation: Implementation of the function to automatically create new Google Sheets within the Spreadsheet as needed. Currently, the application is limited to the existing Sheets and the user would have to manually intervene from Google Sheets to create new Sheets.
 
 ## Testing
-### __Lighthouse Tests__
-* Desktop:\
-![Lighthouse Test Desktop](/documentation/lighthouse-desktop.png)
-* Mobile:\
-![Lighthouse Test Mobile](/documentation/lighthouse-mobile.png)
+To ensure code quality and coding standards, the Python code in "run.py" was tested using the [**Pylint**](https://pypi.org/project/pylint/) tool. The latest iteration of the project scored a 9.31/10. During the testing process all major issues and most minor issues were addressed, improving the overall code quality. Here are a few notable ones that remained:
+* run.py:244:0: R0914: Too many local variables (22/15) (too-many-locals)
+* run.py:541:0: R0914: Too many local variables (19/15) (too-many-locals)
+* run.py:725:0: R0915: Too many statements (57/50) (too-many-statements)
 
-### __Validator Testing__
-- HTML - No errors or warnings to show. Link to report [here](https://validator.w3.org/nu/?doc=https%3A%2F%2Fdestant.github.io%2Fblackjack-3-minute-challenge%2F).
-- CSS - No errors found. Link to report [here](https://jigsaw.w3.org/css-validator/validator?uri=https%3A%2F%2Fdestant.github.io%2Fblackjack-3-minute-challenge%2F&profile=css3svg&usermedium=all&warning=1&vextwarning=&lang=en).
-- JavaScript - JSHint: No errors found. 
-  * Configurations used:\
-  ![JSHint Configurations](/documentation/jshint-configuration.png)
-  * Metrics:\
-  ![JSHint Metrics](/documentation/jshint-metrics.png)
+The above were ignored as they were not considered fundamentally bad for the overall performance of the application. Though, future updates will involve refactoring the code by implementing smaller functions to address these concerns.
 
+**One particular warning was also observed:**
+* run.py:572:8: W0106: Expression "[month_year_list.append(month_year) for month_year in temp_list if month_year not in month_year_list]" is assigned to nothing (expression-not-assigned)
+
+After several iterations of changing the code to try and satisfy both Pylint and the overall functionality, failed, this was ultimately kept as is. Having also not found anything alarming [online](https://pylint.readthedocs.io/en/latest/user_guide/messages/warning/expression-not-assigned.html) and message boards that suggested this was a serious fault, it was also, ultimately, ignored. Please consider letting me know if you think was a mistake on my part, and please condiser letting me know how you would have tackled this part of the code.
 
 ### __Process__
 
 __The Main Menu__
-| Test | Expected Outcome(s) | Outcome |
-| :--- | :--- | :---: |
-| Click “Run Program” | Application starts and the main menu is displayed | &#9745; |
-| Enter an incorrect input (a string) | Throws an error and prompts a re-try | &#9745; |
-| Enter an incorrect input (integer) | Throws an error and prompts a re-try | &#9745; |
-| Enter an incorrect input (a “space”) | Throws an error and prompts a re-try | &#9745; |
-| Enter “1” | Starts the “Record Income” function | &#9745; |
-| Enter “2” | Starts the “Record Expense” function | &#9745; |
-| Enter “3” | Starts the “View Income Charts” function | &#9745; |
-| Enter “4” | Starts the “View Expense Charts” function | &#9745; |
-
+| Test | Expected Outcome(s) |
+| :--- | :--- |
+| Click “Run Program” | Application starts and the main menu is displayed |
+| Enter an incorrect input (a string) | Throws an error and prompts a re-try |
+| Enter an incorrect input (integer) | Throws an error and prompts a re-try |
+| Enter an incorrect input (a “space”) | Throws an error and prompts a re-try |
+| Enter “1” | Starts the “Record Income” function |
+| Enter “2” | Starts the “Record Expense” function |
+| Enter “3” | Starts the “View Income Charts” function |
+| Enter “4” | Starts the “View Expense Charts” function |
 
 __The Record Income Function__
-| Test | Expected Outcome(s) | Outcome |
-| :--- | :--- | :---: |
-| Input a year not in the list | Throws an error and prompts a re-try | &#9745; |
-| Input a valid year | Application continues to the next question | &#9745; |
-| Entering an incorrect input (integers) | Throws an error and prompts a re-try | &#9745; |
-| Entering an incorrect input (a “space”) | Throws an error and prompts a re-try | &#9745; |
-| Enter “1” | Starts the “Record Income” function | &#9745; |
-| Entering “2” | Starts the “Record Expense” function | &#9745; |
-| Entering “3” | Starts the “View Charts” function | &#9745; |
+| Test | Expected Outcome(s) |
+| :--- | :--- |
+| Input a year not in the list | Throws an error and prompts a re-try |
+| Input a valid year | Application continues to the next question |
+|||
+| Enter date in the wrong format | Throws an error and prompts a re-try |
+| Enter invalid date (eg 30/02) | Throws an error and prompts a re-try |
+| Enter an incorrect input (a “space”) | Throws an error and prompts a re-try |
+| Enter **correct** date, followed by a string | Throws an error and prompts a re-try |
+| Enter **correct** date, followed by a not enough data points | Throws an error, gives feedback and prompts a re-try |
+| Enter **correct** date, followed by a too many data points | Throws an error, gives feedback and prompts a re-try |
+| Enter **correct** date, followed **correct** number of data points | Updates corresponding worksheet in Google Sheets |
 
 __The Record Expense Function__
-| Test | Expected Outcome(s) | Outcome |
-| :--- | :--- | :---: |
-| Clicking “Run Program” | Application starts and the main menu is displayed | &#9745; |
-| Entering an incorrect input (a string) | Throws an error and prompts the user to re-try | &#9745; |
-| Entering an incorrect input (integers) | Throws an error and prompts the user to re-try | &#9745; |
-| Entering an incorrect input (a “space”) | Throws an error and prompts the user to re-try | &#9745; |
-| Entering “1” | Starts the “Record Income” function | &#9745; |
-| Entering “2” | Starts the “Record Expense” function | &#9745; |
-| Entering “3” | Starts the “View Charts” function | &#9745; |
+| Test | Expected Outcome(s) |
+| :--- | :--- |
+| Input a year not in the list | Throws an error and prompts a re-try |
+| Input a valid year | Application continues to the next question |
+|||
+| Enter date in the wrong format | Throws an error and prompts a re-try |
+| Enter invalid date (eg 30/02) | Throws an error and prompts a re-try |
+| Enter an incorrect input (a “space”) | Throws an error and prompts a re-try |
+| Enter **correct** date, followed by a string | Throws an error and prompts a re-try |
+| Enter **correct** date, followed by a not enough data points | Throws an error, gives feedback and prompts a re-try |
+| Enter **correct** date, followed by a too many data points | Throws an error, gives feedback and prompts a re-try |
+| Enter **correct** date, followed **correct** number of data points | Updates corresponding worksheet in Google Sheets |
 
 __The View Income Charts Function__
-| Test | Expected Outcome(s) | Outcome |
-| :--- | :--- | :---: |
-| Clicking “Run Program” | Application starts and the main menu is displayed | &#9745; |
-| Entering an incorrect input (a string) | Throws an error and prompts the user to re-try | &#9745; |
-| Entering an incorrect input (integers) | Throws an error and prompts the user to re-try | &#9745; |
-| Entering an incorrect input (a “space”) | Throws an error and prompts the user to re-try | &#9745; |
-| Entering “1” | Starts the “Record Income” function | &#9745; |
-| Entering “2” | Starts the “Record Expense” function | &#9745; |
-| Entering “3” | Starts the “View Charts” function | &#9745; |
+| Test | Expected Outcome(s) |
+| :--- | :--- |
+| Input date before 01/01/2021 | Throws an error and prompts a re-try |
+| Input date after 30/12/2023 | Throws an error and prompts a re-try |
+| Input date within valid range | Application continues to the next question |
+|||
+| Input date before selected start date | Throws an error and prompts a re-try |
+| Input same date as the selected start date | Throws an error and prompts a re-try |
+| Input date after 31/12/2023 | Throws an error and prompts a re-try |
+| Input a valid date after selected start date and on or before 31/12/2023 | Application continues to the next question |
+|||
+| Input an invalid selection, not on the list | Throws an error and prompts a re-try |
+| Input valid selection (case-sensitive) | Application shows bar chart for chosen data |
+| Input valid selection (case-insensitive) | Application shows bar chart for chosen data |
+| Input valid selection (repeated selection) | Application shows bar chart with any repeated data present |
+| Input valid selection (in any order you wish) | Application shows bar chart with the data in the given order |
+|||
+| Choose (M)enu | Takes user back to the main menu |
+| Choose (E)xport | Timestamps data and exports it to Google Sheets |
+| Choose any other input | Throws an error and prompts a re-try |
 
 __The View Expense Charts Function__
 | Test | Expected Outcome(s) | Outcome |
@@ -196,16 +210,16 @@ To the best of my knowledge, no unresolved bugs remain in the current version of
 * Python 3.11.1
 
 ### Libraries
-* **GSpread**: Used to interact with Google Sheets via the Google Sheets API
 * **Datetime**: Primarily used for date format validation and timestamps
-* **Plotext**: Used to visualise data as bar charts
 * **Math**: Used for basic mathematical operations 
 * **OS**: Used for clearing the terminal for a better user experience
 * **Time**: Used to create the delays between Google Sheets API requests
+* **Plotext**: Used to visualise data as bar charts
+* **GSpread**: Used to interact with Google Sheets via the Google Sheets API
 
 ### Tools
-* [Heroku](https://www.heroku.com/)
-* [Lucid Charts](https://www.lucidchart.com/) 
+* [**Heroku**](https://www.heroku.com/) - Used to house the in-browser app
+* [**Lucid Charts**](https://www.lucidchart.com/) - Used to create the flow chart diagram
 
 ## Deployment
 The project was deployed on GitHub pages from the 'Main Branch Source Code' using the following steps:
@@ -291,12 +305,10 @@ Thank you for your interest in the project, and I look forward to any contributi
 * [Datetime Documentation](https://docs.python.org/3/library/datetime.html)
 * [Gspread Documentation](https://docs.gspread.org/en/latest/index.html)
 * [Plotext Documentation](https://github.com/piccolomo/plotext/blob/master/README.md)
-
+* [W3Schools](https://www.w3schools.com/) - general enquiries/syntax
+* [GeekForGeeks](https://www.geeksforgeeks.org/python-programming-language/?ref=shm) - general enquiries/syntax
+* [Stack Overflow](https://stackoverflow.com/) - general enquiries/syntax
 
 
 ### IMAGES IN FEATURES
 ### TABLE OF INSTRUCTUIONS ON HOW TO TEST - change tense
-### TECHNOLOGIES - include libraries + justification ++ lucid charts ++ break down to languages and libraries and tools etc
-think about more user friendly - more concise error messages
-line 171 dont use bare except
-Date selection bug when viewing charts

@@ -687,6 +687,9 @@ def print_bar_chart(labels, data_tuple):
     # Clears the terminal
     os.system('clear')
 
+    # Clears memory data in plotext - reset
+    plt.clear_data()
+
     dates_list = data_tuple[0]
 
     # Under 2 weeks; present daily chart
